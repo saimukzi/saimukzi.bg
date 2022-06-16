@@ -8,6 +8,9 @@ document.body.style.margin = "0px";
 let app = new PIXI.Application({ width: 1920, height: 1080 });
 document.body.appendChild(app.view);
 
+// FPS = 30
+app.ticker.deltaMS = 1000/30;
+
 // Create the sprite and add it to the stage
 let sprite = PIXI.Sprite.from('assets/sample.png');
 app.stage.addChild(sprite);
