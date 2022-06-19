@@ -19,7 +19,7 @@ module.exports = {
   ],
   mode: 'development',
   entry: {
-    minesweeper: './js/minesweeper.js',
+    minesweeper: './js/minesweeper/index.js',
   },
   output: {
     filename: 'cp-[name].js',
