@@ -15,8 +15,22 @@ class MainScene extends smz_game_object.SmzGameObject {
     super(runtime);
     const self = this;
     
+    self.startMs = Date.now();
+    
     self.cellGameGObj = new CellGroupGameObject(self.runtime);
+    self.cellGameGObj.position.x = 960;
+    self.cellGameGObj.position.y = 540;
+    self.cellGameGObj.scale.x = 2;
+    self.cellGameGObj.scale.y = 2;
     self.addChild(self.cellGameGObj);
+  };
+
+  tick(){
+    const self = this;
+    //console.log(performance.now());
+    
+    const timeDiff = Date.now() - self.startMs;
+    self.cellGameGObj.angle = (timeDiff/2/360)%360;
   };
 
 };
