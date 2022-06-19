@@ -20,8 +20,10 @@ class MainScene extends smz_game_object.SmzGameObject {
     self.cellGameGObj = new CellGroupGameObject(self.runtime);
     self.cellGameGObj.position.x = 960;
     self.cellGameGObj.position.y = 540;
-    self.cellGameGObj.scale.x = 2;
-    self.cellGameGObj.scale.y = 2;
+    //self.cellGameGObj.scale.x = 2;
+    //self.cellGameGObj.scale.y = 2;
+    self.cellGameGObj.scale.x = 0.5;
+    self.cellGameGObj.scale.y = 0.5;
     self.addChild(self.cellGameGObj);
   };
 
@@ -30,7 +32,7 @@ class MainScene extends smz_game_object.SmzGameObject {
     //console.log(performance.now());
     
     const timeDiff = Date.now() - self.startMs;
-    self.cellGameGObj.angle = (timeDiff/2/360)%360;
+    //self.cellGameGObj.angle = (timeDiff/2/360)%360;
   };
 
 };
