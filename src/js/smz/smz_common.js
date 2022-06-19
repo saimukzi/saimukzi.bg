@@ -1,3 +1,5 @@
+// import SmzCommon from '/js/smz/smz_common.js';
+
 'use strict';
 
 export const SmzCommon = (function(){
