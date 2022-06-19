@@ -3,6 +3,7 @@
 import * as smz_game_object from '/js/smz/smz_game_object.js';
 import * as PIXI from 'pixi.js';
 
+import SmzCommon from '/js/smz/smz_common.js';
 import CellGameObject from './cell_gobj.js';
 
 'use strict';
@@ -18,6 +19,7 @@ class CellGroupGameObject extends smz_game_object.SmzGameObject {
     // self.testCellObj = new CellGameObject(self.runtime);
     // self.addChild(self.testCellObj);
     for(let i=0;i<20;++i)for(let j=0;j<20;++j){
+      if(Math.random()<(SmzCommon.PHI-1))continue;
       var testCellObj = new CellGameObject(self.runtime);
       testCellObj.position.x = (i-10)*100;
       testCellObj.position.y = (j-10)*100;
