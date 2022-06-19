@@ -18,7 +18,7 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     const offset = (1-phi2)/2;
     
     self.block = new PIXI.Graphics();
-    self.block.beginFill(0xffdfbf);
+    self.block.beginFill(0xdd8833);
     self.block.drawRect(100*offset,100*offset,100*phi2,100*phi2);
     self.block.endFill();
     self.addChild(self.block);
