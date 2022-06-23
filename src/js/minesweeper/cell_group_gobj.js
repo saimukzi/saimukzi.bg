@@ -5,6 +5,8 @@ import * as PIXI from 'pixi.js';
 
 import SmzCommon from '/js/smz/smz_common.js';
 import CellGameObject from './cell_gobj.js';
+import ShiftHState from '/js/minesweeper/shift_h_state.js';
+import MwCommon from '/js/minesweeper/mw_common.js';
 
 'use strict';
 
@@ -18,13 +20,34 @@ class CellGroupGameObject extends smz_game_object.SmzGameObject {
     
     // self.testCellObj = new CellGameObject(self.runtime);
     // self.addChild(self.testCellObj);
-    for(let i=0;i<20;++i)for(let j=0;j<20;++j){
+    for(let i=0;i<MwCommon.CELL_ROWCOL_COUNT;++i)
+    for(let j=0;j<MwCommon.CELL_ROWCOL_COUNT;++j){
       if(Math.random()<(SmzCommon.PHI-1))continue;
-      var testCellObj = new CellGameObject(self.runtime);
-      testCellObj.position.x = (i-10)*100;
-      testCellObj.position.y = (j-10)*100;
-      self.addChild(testCellObj);
+      self.createCell(i,j);
     }
+    
+    self.state = new ShiftHState(self, Date.now());
+    self.state.start();
+  };
+  
+  tick(){
+    const self = this;
+    const now = Date.now();
+    self.state.tick(now);
+  };
+
+  createCell(gx,gy){
+    const self = this;
+    var testCellObj = new CellGameObject(self.runtime);
+    testCellObj.position.x = self.gToP(gx);
+    testCellObj.position.y = self.gToP(gy);
+    testCellObj.gx = gx;
+    testCellObj.gy = gy;
+    self.addChild(testCellObj);
+  };
+  
+  gToP(g){
+    return (g-MwCommon.CELL_ROWCOL_COUNT/2)*MwCommon.CELL_SIZE;
   };
 
 };
