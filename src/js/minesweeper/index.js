@@ -2,6 +2,7 @@
 import * as PIXI from 'pixi.js';
 import * as smz_runtime from '/js/smz/smz_runtime.js';
 import MainScene from './main_scene.js';
+import MwCommon from '/js/minesweeper/mw_common.js';
 
 const GAME_MAIN = {
 
@@ -15,7 +16,7 @@ const GAME_MAIN = {
     document.body.style.overflow = "hidden";
     document.body.style.margin = "0px";
 
-    this.app = new PIXI.Application({ width: self.SCREEN_WIDTH, height: self.SCREEN_HEIGHT, backgroundColor: 0xcc7722 });
+    this.app = new PIXI.Application({ width: self.SCREEN_WIDTH, height: self.SCREEN_HEIGHT, backgroundColor: MwCommon.COLOR_BG });
     //this.app.view.style.position="absolute";
     document.body.appendChild(this.app.view);
 

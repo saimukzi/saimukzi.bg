@@ -3,6 +3,7 @@
 import * as smz_game_object from '/js/smz/smz_game_object.js';
 import * as PIXI from 'pixi.js';
 import SmzCommon from '/js/smz/smz_common.js';
+import MwCommon from '/js/minesweeper/mw_common.js';
 
 'use strict';
 
@@ -18,7 +19,7 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     const offset = (1-phi2)/2;
     
     self.block = new PIXI.Graphics();
-    self.block.beginFill(0xdd8833);
+    self.block.beginFill(MwCommon.COLOR_FG);
     self.block.drawRect(100*offset,100*offset,100*phi2,100*phi2);
     self.block.endFill();
     self.addChild(self.block);
