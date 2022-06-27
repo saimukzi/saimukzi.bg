@@ -15,8 +15,8 @@ MwCommon.CELL_MOVE_DEC = 1000;
 
 MwCommon.CELL_MOVE_MAX = 4;
 
-MwCommon.COLOR_BG = 0xcc7722;
-MwCommon.COLOR_FG = 0xdd8833;
+MwCommon.COLOR_BG = 0x6f6f6f;
+MwCommon.COLOR_FG = 0x8f8f8f;
 
 return MwCommon;
 
