@@ -88,8 +88,9 @@ class ShiftHState {
     });
     
     pp = pp.then((v)=>{
-      self.parentMainScene.state = new ShiftHState(self.parentMainScene, Date.now());
-      self.parentMainScene.state.start();
+      // self.parentMainScene.state = new ShiftHState(self.parentMainScene, Date.now());
+      // self.parentMainScene.state.start();
+      self.parentMainScene.stateMgr.onStateEnd();
     });
   };
   

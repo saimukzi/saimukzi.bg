@@ -32,7 +32,7 @@ class MainScene extends smz_game_object.SmzGameObject {
     //console.log(performance.now());
     
     const timeDiff = Date.now() - self.startMs;
-    //self.cellGameGObj.angle = (timeDiff/2/360)%360;
+    self.cellGameGObj.angle = (timeDiff/2/360)%360;
   };
 
 };
