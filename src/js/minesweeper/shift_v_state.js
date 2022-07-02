@@ -1,13 +1,13 @@
-// import ShiftYState from '/js/minesweeper/shift_h_state.js';
+// import ShiftVState from '/js/minesweeper/shift_h_state.js';
 
 import MwCommon from '/js/minesweeper/mw_common.js';
 import SmzCommon from '/js/smz/smz_common.js';
 
 'use strict';
 
-export const ShiftYState = (function(){
+export const ShiftVState = (function(){
 
-class ShiftYState {
+class ShiftVState {
 
   constructor(parentMainScene,startMs){
     const self = this;
@@ -88,7 +88,7 @@ class ShiftYState {
     });
     
     pp = pp.then((v)=>{
-      self.parentMainScene.state = new ShiftYState(self.parentMainScene, Date.now());
+      self.parentMainScene.state = new ShiftVState(self.parentMainScene, Date.now());
       self.parentMainScene.state.start();
     });
   };
@@ -101,8 +101,8 @@ class ShiftYState {
 
 };
 
-return ShiftYState;
+return ShiftVState;
 
 })();
 
-export default ShiftYState;
+export default ShiftVState;
