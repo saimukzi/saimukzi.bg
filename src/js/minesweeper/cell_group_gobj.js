@@ -6,6 +6,7 @@ import * as PIXI from 'pixi.js';
 import SmzCommon from '/js/smz/smz_common.js';
 import CellGameObject from './cell_gobj.js';
 import ShiftHState from '/js/minesweeper/shift_h_state.js';
+import ShiftVState from '/js/minesweeper/shift_v_state.js';
 import MwCommon from '/js/minesweeper/mw_common.js';
 
 'use strict';
@@ -26,7 +27,7 @@ class CellGroupGameObject extends smz_game_object.SmzGameObject {
       self.createCell(i,j);
     }
     
-    self.state = new ShiftHState(self, Date.now());
+    self.state = new ShiftVState(self, Date.now());
     self.state.start();
   };
   
