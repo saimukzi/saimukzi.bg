@@ -9,9 +9,9 @@ export const ShiftYState = (function(){
 
 class ShiftYState {
 
-  constructor(parent,startMs){
+  constructor(parentMainScene,startMs){
     const self = this;
-    self.parent = parent;
+    self.parentMainScene = parentMainScene;
     self.startMs = startMs;
   };
 
@@ -42,14 +42,14 @@ class ShiftYState {
         for(let j=0;j<newCellCnt;++j){
           const jj = 0-move+j;
           if(Math.random()<(SmzCommon.PHI-1))continue;
-          self.parent.createCell(i,jj);
+          self.parentMainScene.createCell(i,jj);
         }
       }else{
         const newCellCnt = -move;
         for(let j=0;j<newCellCnt;++j){
           const jj = MwCommon.CELL_ROWCOL_COUNT+j;
           if(Math.random()<(SmzCommon.PHI-1))continue;
-          self.parent.createCell(i,jj);
+          self.parentMainScene.createCell(i,jj);
         }
       }
     }
@@ -59,14 +59,14 @@ class ShiftYState {
     const promiseAry = [];
     
     // move cell
-    for(const cell of self.parent.children){
+    for(const cell of self.parentMainScene.children){
       const i = cell.gx;
       const j0 = cell.gy;
       const move = self.moveAry[i];
       const j1 = j0+move;
       cell.gy = j1;
       const promise = new Promise((resolve,reject)=>{
-        cell.slideInPos(self.parent.gToP(i), self.parent.gToP(j1), MwCommon.CELL_MOVE_DEC, resolve);
+        cell.slideInPos(self.parentMainScene.gToP(i), self.parentMainScene.gToP(j1), MwCommon.CELL_MOVE_DEC, resolve);
       });
       promiseAry.push(promise);
     }
@@ -74,7 +74,7 @@ class ShiftYState {
     // remove all out grid cell
     pp = Promise.all(promiseAry).then((v)=>{
       const rmCellList = [];
-      for(const cell of self.parent.children){
+      for(const cell of self.parentMainScene.children){
         var rm=false;
         if(cell.gy<0){rm=true;}
         if(cell.gx<0){rm=true;}
@@ -88,8 +88,8 @@ class ShiftYState {
     });
     
     pp = pp.then((v)=>{
-      self.parent.state = new ShiftYState(self.parent, Date.now());
-      self.parent.state.start();
+      self.parentMainScene.state = new ShiftYState(self.parentMainScene, Date.now());
+      self.parentMainScene.state.start();
     });
   };
   
