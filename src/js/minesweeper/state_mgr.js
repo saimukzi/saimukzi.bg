@@ -6,9 +6,9 @@ export const StateMgr = (function(){
 
 class StateMgr {
 
-  constructor(parent){
+  constructor(parentMainScene){
     const self = this;
-    self.parent = parent;
+    self.parentMainScene = parentMainScene;
   };
 
 };
