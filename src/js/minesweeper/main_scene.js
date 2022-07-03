@@ -20,10 +20,8 @@ class MainScene extends smz_game_object.SmzGameObject {
     self.cellGameGObj = new CellGroupGameObject(self.runtime);
     self.cellGameGObj.position.x = 960;
     self.cellGameGObj.position.y = 540;
-    //self.cellGameGObj.scale.x = 2;
-    //self.cellGameGObj.scale.y = 2;
-    self.cellGameGObj.scale.x = 0.5;
-    self.cellGameGObj.scale.y = 0.5;
+    self.cellGameGObj.scale.x = 2;
+    self.cellGameGObj.scale.y = 2;
     self.addChild(self.cellGameGObj);
   };
 
