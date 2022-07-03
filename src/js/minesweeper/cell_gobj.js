@@ -17,19 +17,28 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     
     const phi2 = Math.pow(SmzCommon.PHI-1, 0.5);
     const offset = (1-phi2)/2;
+    const SQRT2 = Math.pow(2, 0.5);
+
+    self.scaleContainer = new PIXI.Container();
+    self.scaleContainer.scale.x = 100*phi2;
+    self.scaleContainer.scale.y = 100*phi2;
+    self.scaleContainer.position.x = 50;
+    self.scaleContainer.position.y = 50;
+    self.addChild(self.scaleContainer);
     
     self.block = new PIXI.Graphics();
     self.block.beginFill(MwCommon.COLOR_P1);
-    self.block.drawRect(100*offset,100*offset,100*phi2,100*phi2);
+    self.block.drawRect(-SQRT2/2,-SQRT2/2,SQRT2,SQRT2);
     self.block.endFill();
-    self.addChild(self.block);
+    self.block.angle = 45;
+    self.scaleContainer.addChild(self.block);
 
     var mask = new PIXI.Graphics();
     mask.beginFill(0xffffff);
-    mask.drawRect(100*offset,100*offset,100*phi2,100*phi2);
+    mask.drawRect(-0.5,-0.5,1,1);
     mask.endFill();
-    self.mask = mask;
-    self.addChild(mask);
+    self.scaleContainer.mask = mask;
+    self.scaleContainer.addChild(mask);
   };
 
 };
