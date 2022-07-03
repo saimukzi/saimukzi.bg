@@ -22,8 +22,7 @@ class CellGroupGameObject extends smz_game_object.SmzGameObject {
     // self.addChild(self.testCellObj);
     for(let i=0;i<MwCommon.CELL_ROWCOL_COUNT;++i)
     for(let j=0;j<MwCommon.CELL_ROWCOL_COUNT;++j){
-      if(Math.random()<(SmzCommon.PHI-1))continue;
-      self.createCell(i,j);
+      self.randomCreateCell(i,j);
     }
     
     //self.state = new ShiftVState(self, Date.now());
@@ -36,6 +35,12 @@ class CellGroupGameObject extends smz_game_object.SmzGameObject {
     const self = this;
     const now = Date.now();
     //self.state.tick(now);
+  };
+
+  randomCreateCell(gx,gy){
+    const self = this;
+    if(Math.random()<(SmzCommon.PHI-1))return;
+    self.createCell(gx,gy);
   };
 
   createCell(gx,gy){

@@ -41,15 +41,13 @@ class ShiftHState {
         const newCellCnt = move;
         for(let j=0;j<newCellCnt;++j){
           const jj = 0-move+j;
-          if(Math.random()<(SmzCommon.PHI-1))continue;
-          self.parentMainScene.createCell(jj,i);
+          self.parentMainScene.randomCreateCell(jj,i);
         }
       }else{
         const newCellCnt = -move;
         for(let j=0;j<newCellCnt;++j){
           const jj = MwCommon.CELL_ROWCOL_COUNT+j;
-          if(Math.random()<(SmzCommon.PHI-1))continue;
-          self.parentMainScene.createCell(jj,i);
+          self.parentMainScene.randomCreateCell(jj,i);
         }
       }
     }
