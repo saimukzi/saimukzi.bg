@@ -19,10 +19,17 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     const offset = (1-phi2)/2;
     
     self.block = new PIXI.Graphics();
-    self.block.beginFill(MwCommon.COLOR_FG);
+    self.block.beginFill(MwCommon.COLOR_P1);
     self.block.drawRect(100*offset,100*offset,100*phi2,100*phi2);
     self.block.endFill();
     self.addChild(self.block);
+
+    var mask = new PIXI.Graphics();
+    mask.beginFill(0xffffff);
+    mask.drawRect(100*offset,100*offset,100*phi2,100*phi2);
+    mask.endFill();
+    self.mask = mask;
+    self.addChild(mask);
   };
 
 };

@@ -16,7 +16,7 @@ const GAME_MAIN = {
     document.body.style.overflow = "hidden";
     document.body.style.margin = "0px";
 
-    this.app = new PIXI.Application({ width: self.SCREEN_WIDTH, height: self.SCREEN_HEIGHT, backgroundColor: MwCommon.COLOR_BG });
+    this.app = new PIXI.Application({ width: self.SCREEN_WIDTH, height: self.SCREEN_HEIGHT, backgroundColor: MwCommon.COLOR_00 });
     //this.app.view.style.position="absolute";
     document.body.appendChild(this.app.view);
 
