@@ -14,12 +14,20 @@ module.exports = {
       }]
     }),
     new HtmlWebpackPlugin({
-      title: 'saimukzi.bg',
+      filename: 'minesweeper.html',
+      title: 'minesweeper',
+      chunks: ['minesweeper'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'minesweeper_test.html',
+      title: 'minesweeper_test',
+      chunks: ['minesweeper_test'],
     }),
   ],
   mode: 'development',
   entry: {
-    minesweeper: './js/minesweeper/index.js',
+    'minesweeper':      './js/minesweeper/index.js',
+    'minesweeper_test': './js/minesweeper/index_test.js',
   },
   output: {
     filename: 'cp-[name].js',
