@@ -3,6 +3,7 @@ import * as PIXI from 'pixi.js';
 import * as smz_runtime from '/js/smz/smz_runtime.js';
 import TestScene from './test_scene.js';
 import MwCommon from '/js/minesweeper/mw_common.js';
+import MwMedia from '/js/minesweeper/mw_media.js';
 
 const GAME_MAIN = {
 
@@ -23,13 +24,9 @@ const GAME_MAIN = {
     // runtime
     self.runtime = new smz_runtime.SmzRuntime(self.app, self.FPS);
 
-    // root game object
+    MwMedia.initMedia(self.runtime);
 
-    // home menu
     self.runtime.setScene(new TestScene(self.runtime));
-
-    // window.addEventListener("resize",()=>{self.onresize();});
-    // this.onresize();
   },
 };
 
