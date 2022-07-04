@@ -22,6 +22,12 @@ SmzCommon.hsv2rgb = function(h,s,v){
 
 SmzCommon.PHI = (1+Math.sqrt(5))/2;
 
+SmzCommon.waitPromise = function(ms){
+  return new Promise((resolve,reject)=>{
+    setTimeout(resolve,ms);
+  });
+};
+
 return SmzCommon;
 
 })();
