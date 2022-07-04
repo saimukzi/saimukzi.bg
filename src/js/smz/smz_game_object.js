@@ -59,7 +59,7 @@ class SmzGameObject extends PIXI.Container {
   };
   
   onDestroy(){
-    console.log(`onDestroy ${this.uuid}`);
+    //console.log(`onDestroy ${this.uuid}`);
     if((typeof this.tick)=="function"){
       this.runtime.app.ticker.remove(this._tick);
     }
