@@ -26,6 +26,12 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     self.scaleContainer.position.y = 50;
     self.addChild(self.scaleContainer);
     
+    self.nBlock = new PIXI.Graphics();
+    self.nBlock.beginFill(MwCommon.COLOR_N1);
+    self.nBlock.drawRect(-0.5,-0.5,1,1);
+    self.nBlock.endFill();
+    self.scaleContainer.addChild(self.nBlock);
+    
     self.block = new PIXI.Graphics();
     self.block.beginFill(MwCommon.COLOR_P1);
     self.block.drawRect(-SQRT2/2,-SQRT2/2,SQRT2,SQRT2);
