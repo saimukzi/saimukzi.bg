@@ -4,6 +4,7 @@ import * as smz_game_object from '/js/smz/smz_game_object.js';
 import * as PIXI from 'pixi.js';
 import SmzCommon from '/js/smz/smz_common.js';
 import MwCommon from '/js/minesweeper/mw_common.js';
+import MwMedia from '/js/minesweeper/mw_media.js';
 
 'use strict';
 
@@ -16,7 +17,7 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     const self = this;
     
     const phi2 = Math.pow(SmzCommon.PHI-1, 0.5);
-    const offset = (1-phi2)/2;
+    const BLOCK_RADIUS = (2-SmzCommon.PHI)/2;
     const SQRT2 = Math.pow(2, 0.5);
 
     self.scaleContainer = new PIXI.Container();
@@ -26,28 +27,19 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     self.scaleContainer.position.y = 50;
     self.addChild(self.scaleContainer);
 
-    self.nBlock = new PIXI.Graphics();
-    self.nBlock.beginFill(MwCommon.COLOR_N1);
-    self.nBlock.drawRect(-0.5,-0.5,1,1);
-    self.nBlock.endFill();
-    self.scaleContainer.addChild(self.nBlock);
+    self.pBlock = PIXI.Sprite.from(runtime.pRoundBoxTexture);
+    self.pBlock.width = 1;
+    self.pBlock.height = 1;
+    self.pBlock.position.x = -0.5;
+    self.pBlock.position.y = -0.5;
+    self.scaleContainer.addChild(self.pBlock);
 
-    self.maskContainer = new PIXI.Container();
-    self.scaleContainer.addChild(self.maskContainer);
-
-    self.block = new PIXI.Graphics();
-    self.block.beginFill(MwCommon.COLOR_P1);
-    self.block.drawRect(-SQRT2/2,-SQRT2/2,SQRT2,SQRT2);
-    self.block.endFill();
-    self.block.angle = 45;
-    self.maskContainer.addChild(self.block);
-
-    var mask = new PIXI.Graphics();
-    mask.beginFill(0xffffff);
-    mask.drawRect(-0.5,-0.5,1,1);
-    mask.endFill();
-    self.maskContainer.mask = mask;
-    self.maskContainer.addChild(mask);
+    //self.nBlock = PIXI.Sprite.from(runtime.nRoundBoxTexture);
+    //self.nBlock.width = 1;
+    //self.nBlock.height = 1;
+    //self.nBlock.position.x = -0.5;
+    //self.nBlock.position.y = -0.5;
+    //self.scaleContainer.addChild(self.nBlock);
   };
 
 };
