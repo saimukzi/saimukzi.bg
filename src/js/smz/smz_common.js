@@ -83,7 +83,7 @@ SmzCommon.slideInPos = function(param){
   if(DELTA_P<=0){
     if(callback){
       setTimeout(
-        ()=>{callback({overTime:timeGone-DELTA_P});},
+        ()=>{callback({overTime:timeGone);},
         0
       );
     }
