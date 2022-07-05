@@ -7,11 +7,6 @@ import ShiftVState from '/js/minesweeper/shift_v_state.js';
 
 export const StateMgr = (function(){
 
-const STATE_CREATE_FUNC_ARY = [
-  (pms,t)=>{return new ShiftHState(pms,t);},
-  (pms,t)=>{return new ShiftVState(pms,t);},
-];
-
 class StateMgr {
 
   constructor(parentMainScene){
@@ -21,26 +16,16 @@ class StateMgr {
     self.stateIdx = null;
   };
   
-  start() {
+  async goAsync(){
     const self = this;
-    self.update();
-  };
-  
-  onStateEnd() {
-    const self = this;
-    self.update();
-  };
-  
-  update() {
-    const self = this;
-    if(self.stateIdx==null){
-      self.stateIdx = 0;
-    }else{
-      ++self.stateIdx;
+    while(true){
+      await ShiftHState.goAsync(self.parentMainScene);
+      await ShiftVState.goAsync(self.parentMainScene);
     }
-    self.stateIdx %= STATE_CREATE_FUNC_ARY.length;
-    self.state = STATE_CREATE_FUNC_ARY[self.stateIdx](self.parentMainScene, Date.now());
-    self.state.start();
+  };
+  
+  start() {
+    this.goAsync();
   };
 
 };
