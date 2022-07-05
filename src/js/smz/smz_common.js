@@ -105,7 +105,7 @@ SmzCommon.slideInPos = function(param){
       tickFunc(timeRemainAry[0]);
       if(timeRemainAry[0]<=0){
         ticker.remove(tickFuncAry[0]);
-        if(callback){callback({overTime:-timeRemainAry[0]});}
+        if(callback){setTimeout(callback,0,{overTime:-timeRemainAry[0]});}
       }
     };
     ticker.add(tickFuncAry[0],null,priority);
