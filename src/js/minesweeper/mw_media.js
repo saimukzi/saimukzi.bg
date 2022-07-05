@@ -34,7 +34,7 @@ MwMedia.createRoundBoxTexture = function(renderer, bgColor, fgColor, size){
   tmpGraphics = MwMedia.createRoundBoxGraphics(fgColor,size);
   tmpGraphics.position.x = size/2;
   tmpGraphics.position.y = size/2;
-  renderer.render(tmpGraphics, ret, false );
+  renderer.render(tmpGraphics, {renderTexture:ret, clear:false} );
   tmpGraphics.destroy();
   
   console.log(ret);
