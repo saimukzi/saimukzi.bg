@@ -65,6 +65,55 @@ SmzCommon.displayObjLinearMoveToPosPromiseFactory = function(displayObj, ticker,
   return (()=>{return SmzCommon.displayObjLinearMoveToPosPromise(displayObj,ticker,x,y,ms,priority);});
 };
 
+SmzCommon.slideInPos = function(param){
+  const {
+    displayObj,ticker,
+    x,y,deceleration,
+    timeGone=0,
+    priority=PIXI.UPDATE_PRIORITY.NORMAL,
+    callback=null
+  } = param;
+
+  const START_X = displayObj.position.x;
+  const END_X = x;
+  const START_Y = displayObj.position.y;
+  const END_Y = y;
+
+  const DELTA_P = Math.pow((START_X-END_X)*(START_X-END_X)+(START_Y-END_Y)*(START_Y-END_Y),0.5);
+  if(DELTA_P<=0){
+    ticker.addOnce(()=>{callback();});
+    return;
+  }
+  
+  const DELTA_T = Math.pow(2*DELTA_P/deceleration,0.5)*1000;
+  
+  const tickFuncAry = [null];
+  const timeRemainAry = [DELTA_T-timeGone];
+  tickFuncAry[0] = ()=>{
+    timeRemainAry[0] -= ticker.deltaMS;
+    const REMAIN_T = (timeRemainAry[0]>0)?(timeRemainAry[0]/1000):0;
+    const REMAIN_P = REMAIN_T*REMAIN_T*deceleration/2;
+    displayObj.position.x = (REMAIN_P * START_X + (DELTA_P-REMAIN_P) * END_X ) / DELTA_P;
+    displayObj.position.y = (REMAIN_P * START_Y + (DELTA_P-REMAIN_P) * END_Y ) / DELTA_P;
+    if(timeRemainAry[0]<=0){
+      ticker.remove(tickFuncAry[0]);
+      if(callback){callback({overTime:-timeRemainAry[0]});}
+    }
+  };
+  ticker.add(tickFuncAry[0],null,priority);
+};
+
+SmzCommon.p = function(func,param){
+  return new Promise((res,rej)=>{
+    param.callback = res;
+    func(param);
+  });
+};
+
+SmzCommon.pf = function(func,param){
+  return (()=>{return SmzCommon.p(func,param);});
+};
+
 return SmzCommon;
 
 })();

@@ -63,8 +63,14 @@ class ShiftVState {
       const move = self.moveAry[i];
       const j1 = j0+move;
       cell.gy = j1;
-      const promise = new Promise((resolve,reject)=>{
-        cell.slideInPos(self.parentMainScene.gToP(i), self.parentMainScene.gToP(j1), MwCommon.CELL_MOVE_DEC, resolve);
+      //const promise = new Promise((resolve,reject)=>{
+      //  cell.slideInPos(self.parentMainScene.gToP(i), self.parentMainScene.gToP(j1), MwCommon.CELL_MOVE_DEC, resolve);
+      //});
+      const promise = SmzCommon.p(SmzCommon.slideInPos,{
+        displayObj:cell,
+        ticker:cell.runtime.app.ticker,
+        x:self.parentMainScene.gToP(i),y:self.parentMainScene.gToP(j1),
+        deceleration:MwCommon.CELL_MOVE_DEC
       });
       promiseAry.push(promise);
     }
