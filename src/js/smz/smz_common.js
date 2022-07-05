@@ -81,7 +81,12 @@ SmzCommon.slideInPos = function(param){
 
   const DELTA_P = Math.pow((START_X-END_X)*(START_X-END_X)+(START_Y-END_Y)*(START_Y-END_Y),0.5);
   if(DELTA_P<=0){
-    ticker.addOnce(()=>{callback();});
+    if(callback){
+      setTimeout(
+        ()=>{callback({overTime:timeGone-DELTA_P});},
+        0
+      );
+    }
     return;
   }
   
