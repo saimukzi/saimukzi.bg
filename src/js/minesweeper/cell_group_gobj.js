@@ -28,7 +28,7 @@ class CellGroupGameObject extends smz_game_object.SmzGameObject {
     //self.state = new ShiftVState(self, Date.now());
     //self.state.start();
     self.stateMgr = new StateMgr(self);
-    self.stateMgr.start();
+    self.stateMgr.goAsync();
   };
   
   tick(){

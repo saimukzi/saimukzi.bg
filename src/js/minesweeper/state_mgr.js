@@ -12,8 +12,6 @@ class StateMgr {
   constructor(parentMainScene){
     const self = this;
     self.parentMainScene = parentMainScene;
-    self.state = null;
-    self.stateIdx = null;
   };
   
   async goAsync(){
@@ -22,10 +20,6 @@ class StateMgr {
       await ShiftHState.goAsync(self.parentMainScene);
       await ShiftVState.goAsync(self.parentMainScene);
     }
-  };
-  
-  start() {
-    this.goAsync();
   };
 
 };
