@@ -81,12 +81,7 @@ SmzCommon.slideInPos = function(param){
 
   const DELTA_P = Math.pow((START_X-END_X)*(START_X-END_X)+(START_Y-END_Y)*(START_Y-END_Y),0.5);
   if(DELTA_P<=0){
-    if(callback){
-      setTimeout(
-        ()=>{callback({overTime:timeGone});},
-        0
-      );
-    }
+    if(callback){setTimeout(callback,0,{overTime:timeGone});}
     return;
   }
   
@@ -102,12 +97,7 @@ SmzCommon.slideInPos = function(param){
   const timeRemainAry = [DELTA_T-timeGone];
   if(timeRemainAry[0]<=0){
     tickFunc(timeRemainAry[0]);
-    if(callback){
-      setTimeout(
-        ()=>{callback({overTime:-timeRemainAry[0]});},
-        0
-      );
-    }
+    if(callback){setTimeout(callback,0,{overTime:-timeRemainAry[0]});}
   }else{
     const tickFuncAry = [null];
     tickFuncAry[0] = ()=>{
