@@ -10,13 +10,60 @@ export const MwMedia = (function(){
 
 const MwMedia = {};
 
-MwMedia.initMedia = function(runtime){
+MwMedia.initMediaAsync = async function(runtime){
   const renderer = runtime.app.renderer;
   //const renderer = runtime.renderer;
   console.log(renderer);
   
   runtime.pRoundBoxTexture = MwMedia.createRoundBoxTexture(renderer, MwCommon.COLOR_00, MwCommon.COLOR_P1, 128);
-  runtime.nRoundBoxTexture = MwMedia.createRoundBoxTexture(renderer, MwCommon.COLOR_00, MwCommon.COLOR_N1, 128);
+
+  await new Promise((res,rej)=>{
+    runtime.digitBaseTexture = PIXI.BaseTexture.from('assets/digit.png');
+    runtime.digitBaseTexture.on('loaded',res);
+  });
+
+  //runtime.nRoundBoxTexture = MwMedia.createRoundBoxDigitTexture(renderer, MwCommon.COLOR_00, MwCommon.COLOR_N1, runtime.digitBaseTexture, new PIXI.Rectangle(0,0,256,256), 128);
+  runtime.nRoundBoxTextureList = [];
+  for(let i=0;i<4;++i)for(let j=0;j<4;++j){
+    runtime.nRoundBoxTextureList.push(
+      MwMedia.createRoundBoxDigitTexture(renderer, MwCommon.COLOR_00, MwCommon.COLOR_N1, runtime.digitBaseTexture, new PIXI.Rectangle(j*256,i*256,256,256), 128)
+    );
+  }
+};
+
+MwMedia.createRoundBoxDigitTexture = function(renderer, bgColor, fgColor, baseTexture, textureUvRect, size){
+  const ret = PIXI.RenderTexture.create({width:size,height:size});
+  
+  const PHI2 = Math.pow((SmzCommon.PHI-1), 0.5);
+
+  var tmpDo;
+  var tmpTx;
+
+  tmpDo = new PIXI.Graphics();
+  tmpDo.beginFill(bgColor);
+  tmpDo.drawRect(0,0,size,size);
+  tmpDo.endFill();
+  renderer.render(tmpDo, {renderTexture:ret} );
+  tmpDo.destroy();
+
+  tmpDo = MwMedia.createRoundBoxGraphics(fgColor,size);
+  tmpDo.position.x = size/2;
+  tmpDo.position.y = size/2;
+  renderer.render(tmpDo, {renderTexture:ret, clear:false} );
+  tmpDo.destroy();
+
+  tmpTx = new PIXI.Texture(baseTexture,textureUvRect);
+  tmpDo = new PIXI.Sprite(tmpTx);
+  tmpDo.position.x = size*(1-PHI2)/2;
+  tmpDo.position.y = size*(1-PHI2)/2;
+  tmpDo.width = size*PHI2;
+  tmpDo.height = size*PHI2;
+  tmpDo.tint = bgColor;
+  renderer.render(tmpDo, {renderTexture:ret, clear:false} );
+  tmpDo.destroy();
+  tmpTx.destroy();
+  
+  return ret;
 };
 
 MwMedia.createRoundBoxTexture = function(renderer, bgColor, fgColor, size){
@@ -37,7 +84,7 @@ MwMedia.createRoundBoxTexture = function(renderer, bgColor, fgColor, size){
   renderer.render(tmpGraphics, {renderTexture:ret, clear:false} );
   tmpGraphics.destroy();
   
-  console.log(ret);
+  //console.log(ret);
   
   return ret;
 };

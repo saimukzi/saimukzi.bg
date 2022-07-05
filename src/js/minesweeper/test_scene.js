@@ -37,6 +37,8 @@ class TestScene extends smz_game_object.SmzGameObject {
     self.testBtn.position.x = 0;
     self.testBtn.position.y = 100;
     
+    //self.tmp = new PIXI.Sprite(self.runtime.nRoundBoxTextureList[9]);
+    //self.addChild(self.tmp);
   };
 
   onTestBtnClick(){

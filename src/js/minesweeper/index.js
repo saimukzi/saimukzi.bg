@@ -24,13 +24,9 @@ const GAME_MAIN = {
     // runtime
     self.runtime = new smz_runtime.SmzRuntime(self.app, self.FPS);
 
-    MwMedia.initMedia(self.runtime);
-
-    // home menu
-    self.runtime.setScene(new MainScene(self.runtime));
-
-    // window.addEventListener("resize",()=>{self.onresize();});
-    // this.onresize();
+    MwMedia.initMediaAsync(self.runtime).then(()=>{
+      self.runtime.setScene(new TestScene(self.runtime));
+    });
   },
 };
 
