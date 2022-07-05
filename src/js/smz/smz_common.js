@@ -87,20 +87,34 @@ SmzCommon.slideInPos = function(param){
   
   const DELTA_T = Math.pow(2*DELTA_P/deceleration,0.5)*1000;
   
-  const tickFuncAry = [null];
-  const timeRemainAry = [DELTA_T-timeGone];
-  tickFuncAry[0] = ()=>{
-    timeRemainAry[0] -= ticker.deltaMS;
-    const REMAIN_T = (timeRemainAry[0]>0)?(timeRemainAry[0]/1000):0;
+  const tickFunc = (ms)=>{
+    const REMAIN_T = (ms>0)?(ms/1000):0;
     const REMAIN_P = REMAIN_T*REMAIN_T*deceleration/2;
     displayObj.position.x = (REMAIN_P * START_X + (DELTA_P-REMAIN_P) * END_X ) / DELTA_P;
     displayObj.position.y = (REMAIN_P * START_Y + (DELTA_P-REMAIN_P) * END_Y ) / DELTA_P;
-    if(timeRemainAry[0]<=0){
-      ticker.remove(tickFuncAry[0]);
-      if(callback){callback({overTime:-timeRemainAry[0]});}
+  }
+  
+  const timeRemainAry = [DELTA_T-timeGone];
+  if(timeRemainAry[0]<=0){
+    tickFunc(timeRemainAry[0]);
+    if(callback){
+      setTimeout(
+        ()=>{callback({overTime:-timeRemainAry[0]});},
+        0
+      );
     }
-  };
-  ticker.add(tickFuncAry[0],null,priority);
+  }else{
+    const tickFuncAry = [null];
+    tickFuncAry[0] = ()=>{
+      timeRemainAry[0] -= ticker.deltaMS;
+      tickFunc(timeRemainAry[0]);
+      if(timeRemainAry[0]<=0){
+        ticker.remove(tickFuncAry[0]);
+        if(callback){callback({overTime:-timeRemainAry[0]});}
+      }
+    };
+    ticker.add(tickFuncAry[0],null,priority);
+  }
 };
 
 SmzCommon.p = function(func,param){
