@@ -30,16 +30,27 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     self.pBlock = PIXI.Sprite.from(runtime.pRoundBoxTexture);
     self.pBlock.width = 1;
     self.pBlock.height = 1;
-    self.pBlock.position.x = -0.5;
-    self.pBlock.position.y = -0.5;
+    self.pBlock.anchor.x = 0.5;
+    self.pBlock.anchor.y = 0.5;
     self.scaleContainer.addChild(self.pBlock);
 
-    //self.nBlock = PIXI.Sprite.from(runtime.nRoundBoxTexture);
-    //self.nBlock.width = 1;
-    //self.nBlock.height = 1;
-    //self.nBlock.position.x = -0.5;
-    //self.nBlock.position.y = -0.5;
-    //self.scaleContainer.addChild(self.nBlock);
+    self.nBlock = PIXI.Sprite.from(PIXI.Texture.EMPTY);
+    self.nBlock.width = 1;
+    self.nBlock.height = 1;
+    self.nBlock.anchor.x = 0.5;
+    self.nBlock.anchor.y = 0.5;
+    self.scaleContainer.addChild(self.nBlock);
+
+    // self.setNBlockTexture(Math.floor(Math.random()*10),Math.floor(Math.random()*4));
+  };
+
+  setNBlockTexture(tId, dir){
+    const self=this;
+    self.nBlock.angle = dir*90;
+    self.nBlock.texture = this.runtime.nRoundBoxTextureList[tId];
+  };
+
+  async showNBlockAsync(){
   };
 
 };
