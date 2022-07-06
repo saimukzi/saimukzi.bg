@@ -44,8 +44,9 @@ class TestScene extends smz_game_object.SmzGameObject {
   async onTestBtnClick(){
     const self = this;
     console.log("onMouseUp Start");
+    const NOW_MS = performance.now();
     self.testCellGObj.setNBlockTexture(SmzCommon.randInt(10),SmzCommon.randInt(4));
-    self.testCellGObj.showNBlockAsync(Math.random()*360,0);
+    self.testCellGObj.showNBlockAsync(Math.random()*360,NOW_MS,NOW_MS);
     console.log("onMouseUp End");
   };
 

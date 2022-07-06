@@ -9,7 +9,7 @@ export const ShiftHState = (function(){
 
 const ShiftHState = {};
 
-ShiftHState.goAsync = async function(parentMainScene, timeGone=0){
+ShiftHState.goAsync = async function(parentMainScene, startMs, nowMs){
   // cal move dist
   const moveAry = Array(MwCommon.CELL_ROWCOL_COUNT);
   for(let i=0;i<MwCommon.CELL_ROWCOL_COUNT;++i){
@@ -55,22 +55,21 @@ ShiftHState.goAsync = async function(parentMainScene, timeGone=0){
     const move = moveAry[i];
     const j1 = j0+move;
     cell.gx = j1;
-    //const promise = new Promise((resolve,reject)=>{
-    //  cell.slideInPos(parentMainScene.gToP(j1), parentMainScene.gToP(i), MwCommon.CELL_MOVE_DEC, resolve);
-    //});
     const promise = SmzCommon.p(SmzCommon.slideInPos,{
       displayObj:cell,
       ticker:cell.runtime.app.ticker,
       x:parentMainScene.gToP(j1),y:parentMainScene.gToP(i),
-      deceleration:MwCommon.CELL_MOVE_DEC,
-      timeGone:timeGone,
+      startMs:startMs,nowMs:nowMs,
+      endMs:startMs+1000,
     });
     promiseAry.push(promise);
   }
 
-  var overTime = await Promise.all(promiseAry);
-  overTime = overTime.map(i=>i.overTime);
-  overTime = Math.max(...overTime);
+  var retAry = await Promise.all(promiseAry);
+  var endMs = retAry.map(i=>i.endMs);
+  endMs = Math.max(...endMs);
+  var nowMs = retAry.map(i=>i.nowMs);
+  nowMs = Math.max(...nowMs);
   
   // remove all out grid cell
   const rmCellList = [];
@@ -86,7 +85,7 @@ ShiftHState.goAsync = async function(parentMainScene, timeGone=0){
     cell.destroy();
   }
   
-  return {overTime:overTime};
+  return {endMs:endMs,nowMs:nowMs};
 };
 
 return ShiftHState;

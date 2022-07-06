@@ -61,7 +61,7 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     self.nBlock.texture = this.runtime.nRoundBoxTextureList[tId];
   };
 
-  async showNBlockAsync(angle,timeGone){
+  async showNBlockAsync(angle,startMs,nowMs){
     const self=this;
 
     const phi2 = Math.pow(SmzCommon.PHI-1, 0.5);
@@ -71,11 +71,11 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     self.nBlockMaskRotate.angle = angle;
     self.nBlockMask.position.x = SQRT2;
     self.nBlock.visible = true;
-    await SmzCommon.linearMoveToPos({
+    return await SmzCommon.linearMoveToPos({
       displayObj: self.nBlockMask,
       ticker: self.runtime.app.ticker,
       x:0,y:0,
-      ms:250,timeGone:timeGone
+      startMs:startMs,endMs:startMs+250,nowMs:nowMs,
     });
   };
 
