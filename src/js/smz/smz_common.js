@@ -22,6 +22,10 @@ SmzCommon.hsv2rgb = function(h,s,v){
   return (rr<<16)|(gg<<8)|(bb<<0); 
 };
 
+SmzCommon.randInt = function(v){
+  return Math.floor(Math.random()*v);
+};
+
 SmzCommon.PHI = (1+Math.sqrt(5))/2;
 
 SmzCommon.waitPromise = function(ms){
@@ -63,6 +67,44 @@ SmzCommon.displayObjLinearMoveToPosPromise = function(displayObj, ticker, x, y, 
 
 SmzCommon.displayObjLinearMoveToPosPromiseFactory = function(displayObj, ticker, x, y, ms, priority=PIXI.UPDATE_PRIORITY.NORMAL){
   return (()=>{return SmzCommon.displayObjLinearMoveToPosPromise(displayObj,ticker,x,y,ms,priority);});
+};
+
+SmzCommon.linearMoveToPos = function(param){
+  const {
+    displayObj,ticker,
+    x,y,
+    ms,timeGone=0,
+    priority=PIXI.UPDATE_PRIORITY.NORMAL,
+    callback=null
+  } = param;
+
+  const START_X = displayObj.position.x;
+  const END_X = x;
+  const START_Y = displayObj.position.y;
+  const END_Y = y;
+  
+  const tickFunc = (remainMs)=>{
+    const REMAIN_MS = (remainMs>0)?remainMs:0;
+    displayObj.position.x = (REMAIN_MS * START_X + (ms-REMAIN_MS) * END_X ) / ms;
+    displayObj.position.y = (REMAIN_MS * START_Y + (ms-REMAIN_MS) * END_Y ) / ms;
+  }
+
+  const timeRemainAry = [ms-timeGone];
+  if(timeRemainAry[0]<=0){
+    tickFunc(timeRemainAry[0]);
+    if(callback){setTimeout(callback,0,{overTime:-timeRemainAry[0]});}
+  }else{
+    const tickFuncAry = [null];
+    tickFuncAry[0] = (delta)=>{
+      timeRemainAry[0] -= ticker.deltaMS;
+      tickFunc(timeRemainAry[0]);
+      if(timeRemainAry[0]<=0){
+        ticker.remove(tickFuncAry[0]);
+        if(callback){setTimeout(callback,0,{overTime:-timeRemainAry[0]});}
+      }
+    };
+    ticker.add(tickFuncAry[0],null,priority);
+  }
 };
 
 SmzCommon.slideInPos = function(param){

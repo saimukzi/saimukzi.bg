@@ -41,15 +41,12 @@ class TestScene extends smz_game_object.SmzGameObject {
     //self.addChild(self.tmp);
   };
 
-  onTestBtnClick(){
+  async onTestBtnClick(){
     const self = this;
-    Promise.resolve()
-      .then(()=>{console.log("onMouseUp Start");})
-      //.then(SmzCommon.waitPromiseFactory(1000))
-      .then(SmzCommon.displayObjLinearMoveToPosPromiseFactory(
-        self.testCellGObj.block,self.runtime.app.ticker,1,1,250
-      ))
-      .then(()=>{console.log("onMouseUp End");});
+    console.log("onMouseUp Start");
+    self.testCellGObj.setNBlockTexture(SmzCommon.randInt(10),SmzCommon.randInt(4));
+    self.testCellGObj.showNBlockAsync(Math.random()*360,0);
+    console.log("onMouseUp End");
   };
 
 };

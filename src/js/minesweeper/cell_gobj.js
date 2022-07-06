@@ -39,7 +39,18 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     self.nBlock.height = 1;
     self.nBlock.anchor.x = 0.5;
     self.nBlock.anchor.y = 0.5;
+    self.nBlock.visible = false;
     self.scaleContainer.addChild(self.nBlock);
+
+    self.nBlockMaskRotate = new PIXI.Container();
+    self.scaleContainer.addChild(self.nBlockMaskRotate);
+
+    self.nBlockMask = new PIXI.Graphics();
+    self.nBlockMask.beginFill(0xffffff);
+    self.nBlockMask.drawRect(-SQRT2/2,-SQRT2/2,SQRT2,SQRT2);
+    self.nBlockMask.endFill();
+    self.nBlockMaskRotate.addChild(self.nBlockMask);
+    self.nBlock.mask = self.nBlockMask;
 
     // self.setNBlockTexture(Math.floor(Math.random()*10),Math.floor(Math.random()*4));
   };
@@ -50,7 +61,22 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     self.nBlock.texture = this.runtime.nRoundBoxTextureList[tId];
   };
 
-  async showNBlockAsync(){
+  async showNBlockAsync(angle,timeGone){
+    const self=this;
+
+    const phi2 = Math.pow(SmzCommon.PHI-1, 0.5);
+    const SQRT2 = Math.pow(2, 0.5);
+
+    self.nBlock.visible = false;
+    self.nBlockMaskRotate.angle = angle;
+    self.nBlockMask.position.x = SQRT2;
+    self.nBlock.visible = true;
+    await SmzCommon.linearMoveToPos({
+      displayObj: self.nBlockMask,
+      ticker: self.runtime.app.ticker,
+      x:0,y:0,
+      ms:250,timeGone:timeGone
+    });
   };
 
 };
