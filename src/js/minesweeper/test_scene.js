@@ -51,7 +51,7 @@ class TestScene extends smz_game_object.SmzGameObject {
     tData = await SmzCommon.waitPromise(tData,500);
     tData = await self.testCellGObj.hideNBlockAsync(Math.random()*360,tData);
     console.log("onMouseUp End");
-    return tmp;
+    return tData;
   };
 
 };

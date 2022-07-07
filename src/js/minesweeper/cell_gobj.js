@@ -82,7 +82,7 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     );
   };
 
-  async hideNBlockAsync(angle,startMs,nowMs){
+  async hideNBlockAsync(angle,tData){
     const self=this;
 
     const phi2 = Math.pow(SmzCommon.PHI-1, 0.5);
