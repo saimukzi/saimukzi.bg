@@ -71,12 +71,37 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     self.nBlockMaskRotate.angle = angle;
     self.nBlockMask.position.x = SQRT2;
     self.nBlock.visible = true;
-    return await SmzCommon.linearMoveToPos({
-      displayObj: self.nBlockMask,
-      ticker: self.runtime.app.ticker,
-      x:0,y:0,
-      startMs:startMs,endMs:startMs+250,nowMs:nowMs,
-    });
+    return await SmzCommon.p(
+      SmzCommon.linearMoveToPos,
+      {
+        displayObj: self.nBlockMask,
+        ticker: self.runtime.app.ticker,
+        x:0,y:0,
+        startMs:startMs,endMs:startMs+250,nowMs:nowMs,
+      }
+    );
+  };
+
+  async hideNBlockAsync(angle,startMs,nowMs){
+    const self=this;
+
+    const phi2 = Math.pow(SmzCommon.PHI-1, 0.5);
+    const SQRT2 = Math.pow(2, 0.5);
+
+    self.nBlockMaskRotate.angle = angle;
+    self.nBlockMask.position.x = 0;
+    self.nBlock.visible = true;
+    const ret = await SmzCommon.p(
+      SmzCommon.linearMoveToPos,
+      {
+        displayObj: self.nBlockMask,
+        ticker: self.runtime.app.ticker,
+        x:SQRT2,y:0,
+        startMs:startMs,endMs:startMs+250,nowMs:nowMs,
+      }
+    );
+    self.nBlock.visible = false;
+    return ret;
   };
 
 };

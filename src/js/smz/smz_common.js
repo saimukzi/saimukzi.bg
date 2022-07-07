@@ -33,14 +33,16 @@ SmzCommon.bound = function(a,b,c){
 
 SmzCommon.PHI = (1+Math.sqrt(5))/2;
 
-SmzCommon.waitPromise = function(ms){
-  return new Promise((resolve,reject)=>{
-    setTimeout(resolve,ms);
+SmzCommon.waitPromise = function(endMs){
+  return new Promise((res,rej)=>{
+    setTimeout(
+      ()=>{
+        const NOW_MS = performance.now();
+        res({nowMs:NOW_MS,endMs:endMs});
+      },
+      endMs-performance.now()
+    );
   });
-};
-
-SmzCommon.waitPromiseFactory = function(ms){
-  return (()=>{return SmzCommon.waitPromise(ms);});
 };
 
 SmzCommon.currentMs = function(ticker){
@@ -110,14 +112,12 @@ SmzCommon.p = function(func,param){
   });
 };
 
-SmzCommon.pf = function(func,param){
-  return (()=>{return SmzCommon.p(func,param);});
-};
-
 SmzCommon._animate = function(tickFunc, nowMs, endMs, ticker, callback, priority){
   tickFunc(nowMs);
 
-  if(nowMs<endMs){
+  if(nowMs>=endMs){
+    if(callback){setTimeout(callback,0,{nowMs:nowMs,endMs:endMs});}
+  }else{
     const tickFuncAry = [null];
     tickFuncAry[0] = ()=>{
       const CURRENT_MS=SmzCommon.currentMs(ticker);
