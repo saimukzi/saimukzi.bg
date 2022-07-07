@@ -64,26 +64,12 @@ SmzCommon.linearMoveToPos = function(param){
   const DELTA_MS = endMs-startMs;
   const END_MS = endMs;
   
-  const tickFuncAry = [null];
   const tickFunc = (nowMs)=>{
     const REMAIN_MS = C.bound(0,END_MS-nowMs,DELTA_MS);
     displayObj.position.x = (REMAIN_MS * START_X + (DELTA_MS-REMAIN_MS) * END_X ) / DELTA_MS;
     displayObj.position.y = (REMAIN_MS * START_Y + (DELTA_MS-REMAIN_MS) * END_Y ) / DELTA_MS;
-    if(nowMs>=END_MS){
-      if(tickFuncAry[0]){ticker.remove(tickFuncAry[0]);}
-      if(callback){setTimeout(callback,0,{nowMs:nowMs,endMs:END_MS});}
-    }
   }
-
-  tickFunc(nowMs);
-
-  if(nowMs<END_MS){
-    tickFuncAry[0] = ()=>{
-      const CURRENT_MS=SmzCommon.currentMs(ticker);
-      tickFunc(CURRENT_MS);
-    };
-    ticker.add(tickFuncAry[0],null,priority);
-  }
+  C._animate(tickFunc,nowMs,END_MS,ticker,callback,priority);
 };
 
 SmzCommon.slideInPos = function(param){
@@ -107,28 +93,14 @@ SmzCommon.slideInPos = function(param){
   const END_MS   = (endMs!=null)?endMs:(startMs+DELTA_MS);
   const DECEL   = (deceleration!=null)?(deceleration):(2*DELTA_P*Math.pow(1000/DELTA_MS,2));
   
-  const tickFuncAry = [null];
   const tickFunc = (nowMs)=>{
     const REMAIN_MS = C.bound(0,END_MS-nowMs,DELTA_MS);
     const REMAIN_S = REMAIN_MS/1000;
     const REMAIN_P = REMAIN_S*REMAIN_S*DECEL/2;
     displayObj.position.x = (REMAIN_P * START_X + (DELTA_P-REMAIN_P) * END_X ) / DELTA_P;
     displayObj.position.y = (REMAIN_P * START_Y + (DELTA_P-REMAIN_P) * END_Y ) / DELTA_P;
-    if(nowMs>=END_MS){
-      if(tickFuncAry[0]){ticker.remove(tickFuncAry[0]);}
-      if(callback){setTimeout(callback,0,{nowMs:nowMs,endMs:END_MS});}
-    }
-  }
-  
-  tickFunc(nowMs);
-
-  if(nowMs<END_MS){
-    tickFuncAry[0] = ()=>{
-      const CURRENT_MS=SmzCommon.currentMs(ticker);
-      tickFunc(CURRENT_MS);
-    };
-    ticker.add(tickFuncAry[0],null,priority);
-  }
+  };
+  C._animate(tickFunc,nowMs,END_MS,ticker,callback,priority);
 };
 
 SmzCommon.p = function(func,param){
@@ -140,6 +112,23 @@ SmzCommon.p = function(func,param){
 
 SmzCommon.pf = function(func,param){
   return (()=>{return SmzCommon.p(func,param);});
+};
+
+SmzCommon._animate = function(tickFunc, nowMs, endMs, ticker, callback, priority){
+  tickFunc(nowMs);
+
+  if(nowMs<endMs){
+    const tickFuncAry = [null];
+    tickFuncAry[0] = ()=>{
+      const CURRENT_MS=SmzCommon.currentMs(ticker);
+      tickFunc(CURRENT_MS);
+      if(CURRENT_MS>=endMs){
+        ticker.remove(tickFuncAry[0]);
+        if(callback){setTimeout(callback,0,{nowMs:CURRENT_MS,endMs:endMs});}
+      }
+    };
+    ticker.add(tickFuncAry[0],null,priority);
+  }
 };
 
 return SmzCommon;
