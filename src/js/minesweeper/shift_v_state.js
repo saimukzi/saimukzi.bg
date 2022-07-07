@@ -9,7 +9,7 @@ export const ShiftVState = (function(){
 
 const ShiftVState = {};
 
-ShiftVState.goAsync = async function(parentMainScene, startMs, nowMs){
+ShiftVState.goAsync = async function(parentMainScene, tData){
   // cal move dist
   const moveAry = Array(MwCommon.CELL_ROWCOL_COUNT);
   for(let i=0;i<MwCommon.CELL_ROWCOL_COUNT;++i){
@@ -59,17 +59,13 @@ ShiftVState.goAsync = async function(parentMainScene, startMs, nowMs){
       displayObj:cell,
       ticker:cell.runtime.app.ticker,
       x:parentMainScene.gToP(i),y:parentMainScene.gToP(j1),
-      startMs:startMs,nowMs:nowMs,
-      endMs:startMs+1000,
+      tData:tData,deltaMs:1000,
     });
     promiseAry.push(promise);
   }
 
   var retAry = await Promise.all(promiseAry);
-  var endMs = retAry.map(i=>i.endMs);
-  endMs = Math.max(...endMs);
-  var nowMs = retAry.map(i=>i.nowMs);
-  nowMs = Math.max(...nowMs);
+  var nowTData = SmzCommon.maxTData(retAry);
   
   // remove all out grid cell
   const rmCellList = [];
@@ -85,7 +81,7 @@ ShiftVState.goAsync = async function(parentMainScene, startMs, nowMs){
     cell.destroy();
   }
   
-  return {endMs:endMs,nowMs:nowMs};
+  return nowTData;
 };
 
 return ShiftVState;

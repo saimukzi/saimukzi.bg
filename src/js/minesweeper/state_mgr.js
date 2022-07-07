@@ -17,14 +17,11 @@ class StateMgr {
   async goAsync(){
     const self = this;
     const START_MS = performance.now();
-    var endMs = START_MS;
-    var nowMs = START_MS;
+    var tData = {planMs:START_MS, threadMs:START_MS};
     var tmp;
     while(true){
-      tmp = (await ShiftHState.goAsync(self.parentMainScene,endMs,nowMs));
-      endMs=tmp.endMs;nowMs=tmp.nowMs;
-      tmp = (await ShiftVState.goAsync(self.parentMainScene,endMs,nowMs));
-      endMs=tmp.endMs;nowMs=tmp.nowMs;
+      tData = (await ShiftHState.goAsync(self.parentMainScene,tData));
+      tData = (await ShiftVState.goAsync(self.parentMainScene,tData));
     }
   };
 

@@ -31,16 +31,25 @@ SmzCommon.bound = function(a,b,c){
   return Math.min(Math.max(a,b),c);
 };
 
+SmzCommon.maxTData = function(tDataAry){
+  var planMs = tDataAry.map(i=>i.planMs);
+  planMs = Math.max(...planMs);
+  var threadMs = tDataAry.map(i=>i.threadMs);
+  threadMs = Math.max(...threadMs);
+  return {planMs:planMs,threadMs:threadMs};
+};
+
 SmzCommon.PHI = (1+Math.sqrt(5))/2;
 
-SmzCommon.waitPromise = function(endMs){
+SmzCommon.waitPromise = function(tData,deltaMs){
   return new Promise((res,rej)=>{
+    const PLAN_END_MS = tData.planMs+deltaMs;
     setTimeout(
       ()=>{
         const NOW_MS = performance.now();
-        res({nowMs:NOW_MS,endMs:endMs});
+        res({threadMs:NOW_MS,planMs:PLAN_END_MS});
       },
-      endMs-performance.now()
+      PLAN_END_MS-performance.now()
     );
   });
 };
@@ -54,7 +63,7 @@ SmzCommon.linearMoveToPos = function(param){
   const {
     displayObj,ticker,
     x,y,
-    startMs, endMs, nowMs,
+    tData, deltaMs,
     priority=PIXI.UPDATE_PRIORITY.NORMAL,
     callback=null
   } = param;
@@ -63,27 +72,27 @@ SmzCommon.linearMoveToPos = function(param){
   const END_X = x;
   const START_Y = displayObj.position.y;
   const END_Y = y;
-  const DELTA_MS = endMs-startMs;
-  const END_MS = endMs;
+  const DELTA_MS = deltaMs;
+  const PLAN_END_MS = tData.planMs+deltaMs;
   
   const tickFunc = (nowMs)=>{
-    const REMAIN_MS = C.bound(0,END_MS-nowMs,DELTA_MS);
+    const REMAIN_MS = C.bound(0,PLAN_END_MS-nowMs,DELTA_MS);
     displayObj.position.x = (REMAIN_MS * START_X + (DELTA_MS-REMAIN_MS) * END_X ) / DELTA_MS;
     displayObj.position.y = (REMAIN_MS * START_Y + (DELTA_MS-REMAIN_MS) * END_Y ) / DELTA_MS;
   }
-  C._animate(tickFunc,nowMs,END_MS,ticker,callback,priority);
+  C._animate(tickFunc,tData,PLAN_END_MS,ticker,callback,priority);
 };
 
 SmzCommon.slideInPos = function(param){
   const {
     displayObj,ticker,
     x,y,deceleration=null,
-    startMs, endMs=null, nowMs,
+    tData, deltaMs=null,
     priority=PIXI.UPDATE_PRIORITY.NORMAL,
     callback=null
   } = param;
 
-  console.assert((deceleration==null)!=(endMs==null),"CUPNVQZYVF");
+  console.assert((deceleration==null)!=(deltaMs==null),"CUPNVQZYVF");
 
   const START_X = displayObj.position.x;
   const END_X = x;
@@ -91,18 +100,18 @@ SmzCommon.slideInPos = function(param){
   const END_Y = y;
 
   const DELTA_P = Math.pow((START_X-END_X)*(START_X-END_X)+(START_Y-END_Y)*(START_Y-END_Y),0.5);
-  const DELTA_MS = (endMs!=null)?(endMs-startMs):(Math.pow(2*DELTA_P/deceleration,0.5)*1000);
-  const END_MS   = (endMs!=null)?endMs:(startMs+DELTA_MS);
+  const DELTA_MS = (deltaMs!=null)?(deltaMs):(Math.pow(2*DELTA_P/deceleration,0.5)*1000);
+  const PLAN_END_MS   = tData.planMs+DELTA_MS;
   const DECEL   = (deceleration!=null)?(deceleration):(2*DELTA_P*Math.pow(1000/DELTA_MS,2));
   
   const tickFunc = (nowMs)=>{
-    const REMAIN_MS = C.bound(0,END_MS-nowMs,DELTA_MS);
+    const REMAIN_MS = C.bound(0,PLAN_END_MS-nowMs,DELTA_MS);
     const REMAIN_S = REMAIN_MS/1000;
     const REMAIN_P = REMAIN_S*REMAIN_S*DECEL/2;
     displayObj.position.x = (REMAIN_P * START_X + (DELTA_P-REMAIN_P) * END_X ) / DELTA_P;
     displayObj.position.y = (REMAIN_P * START_Y + (DELTA_P-REMAIN_P) * END_Y ) / DELTA_P;
   };
-  C._animate(tickFunc,nowMs,END_MS,ticker,callback,priority);
+  C._animate(tickFunc,tData,PLAN_END_MS,ticker,callback,priority);
 };
 
 SmzCommon.p = function(func,param){
@@ -112,19 +121,20 @@ SmzCommon.p = function(func,param){
   });
 };
 
-SmzCommon._animate = function(tickFunc, nowMs, endMs, ticker, callback, priority){
-  tickFunc(nowMs);
+SmzCommon._animate = function(tickFunc, tData, planEndMs, ticker, callback, priority){
+  const THREAD_MS = tData.threadMs;
+  tickFunc(THREAD_MS);
 
-  if(nowMs>=endMs){
-    if(callback){setTimeout(callback,0,{nowMs:nowMs,endMs:endMs});}
+  if(THREAD_MS>=planEndMs){
+    if(callback){setTimeout(callback,0,{threadMs:THREAD_MS,planMs:planEndMs});}
   }else{
     const tickFuncAry = [null];
     tickFuncAry[0] = ()=>{
-      const CURRENT_MS=SmzCommon.currentMs(ticker);
-      tickFunc(CURRENT_MS);
-      if(CURRENT_MS>=endMs){
+      const THREAD_MS=SmzCommon.currentMs(ticker);
+      tickFunc(THREAD_MS);
+      if(THREAD_MS>=planEndMs){
         ticker.remove(tickFuncAry[0]);
-        if(callback){setTimeout(callback,0,{nowMs:CURRENT_MS,endMs:endMs});}
+        if(callback){setTimeout(callback,0,{threadMs:THREAD_MS,planMs:planEndMs});}
       }
     };
     ticker.add(tickFuncAry[0],null,priority);

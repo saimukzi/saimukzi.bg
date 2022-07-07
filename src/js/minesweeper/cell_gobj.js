@@ -61,7 +61,7 @@ class CellGameObject extends smz_game_object.SmzGameObject {
     self.nBlock.texture = this.runtime.nRoundBoxTextureList[tId];
   };
 
-  async showNBlockAsync(angle,startMs,nowMs){
+  async showNBlockAsync(angle,tData){
     const self=this;
 
     const phi2 = Math.pow(SmzCommon.PHI-1, 0.5);
@@ -77,7 +77,7 @@ class CellGameObject extends smz_game_object.SmzGameObject {
         displayObj: self.nBlockMask,
         ticker: self.runtime.app.ticker,
         x:0,y:0,
-        startMs:startMs,endMs:startMs+250,nowMs:nowMs,
+        tData:tData,deltaMs:250,
       }
     );
   };
@@ -97,7 +97,7 @@ class CellGameObject extends smz_game_object.SmzGameObject {
         displayObj: self.nBlockMask,
         ticker: self.runtime.app.ticker,
         x:SQRT2,y:0,
-        startMs:startMs,endMs:startMs+250,nowMs:nowMs,
+        tData:tData,deltaMs:250,
       }
     );
     self.nBlock.visible = false;

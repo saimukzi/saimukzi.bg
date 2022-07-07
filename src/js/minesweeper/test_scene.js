@@ -46,13 +46,10 @@ class TestScene extends smz_game_object.SmzGameObject {
     console.log("onMouseUp Start");
     const NOW_MS = performance.now();
     self.testCellGObj.setNBlockTexture(SmzCommon.randInt(10),SmzCommon.randInt(4));
-    var tmp,nowMs,aniMs;
-    tmp = await self.testCellGObj.showNBlockAsync(Math.random()*360,NOW_MS,NOW_MS);
-    nowMs=tmp.nowMs;aniMs=tmp.endMs;
-    tmp = await SmzCommon.waitPromise(aniMs+500);
-    console.log(tmp);
-    nowMs=tmp.nowMs;aniMs=tmp.endMs;
-    tmp = await self.testCellGObj.hideNBlockAsync(Math.random()*360,aniMs,nowMs);
+    var tData = {planMs:NOW_MS,threadMs:NOW_MS};
+    tData = await self.testCellGObj.showNBlockAsync(Math.random()*360,tData);
+    tData = await SmzCommon.waitPromise(tData,500);
+    tData = await self.testCellGObj.hideNBlockAsync(Math.random()*360,tData);
     console.log("onMouseUp End");
     return tmp;
   };
