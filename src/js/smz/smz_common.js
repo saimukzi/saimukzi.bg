@@ -7,6 +7,7 @@ import * as PIXI from 'pixi.js';
 export const SmzCommon = (function(){
 
 const SmzCommon = {};
+const C = SmzCommon;
 
 SmzCommon.clone = function(data){
   // vue use Proxy and structuredClone not working
@@ -24,6 +25,10 @@ SmzCommon.hsv2rgb = function(h,s,v){
 
 SmzCommon.randInt = function(v){
   return Math.floor(Math.random()*v);
+};
+
+SmzCommon.bound = function(a,b,c){
+  return Math.min(Math.max(a,b),c);
 };
 
 SmzCommon.PHI = (1+Math.sqrt(5))/2;
@@ -61,7 +66,7 @@ SmzCommon.linearMoveToPos = function(param){
   
   const tickFuncAry = [null];
   const tickFunc = (nowMs)=>{
-    const REMAIN_MS = Math.min(Math.max(0,END_MS-nowMs),DELTA_MS);
+    const REMAIN_MS = C.bound(0,END_MS-nowMs,DELTA_MS);
     displayObj.position.x = (REMAIN_MS * START_X + (DELTA_MS-REMAIN_MS) * END_X ) / DELTA_MS;
     displayObj.position.y = (REMAIN_MS * START_Y + (DELTA_MS-REMAIN_MS) * END_Y ) / DELTA_MS;
     if(nowMs>=END_MS){
@@ -104,7 +109,7 @@ SmzCommon.slideInPos = function(param){
   
   const tickFuncAry = [null];
   const tickFunc = (nowMs)=>{
-    const REMAIN_MS = Math.min(Math.max(0,END_MS-nowMs),DELTA_MS);
+    const REMAIN_MS = C.bound(0,END_MS-nowMs,DELTA_MS);
     const REMAIN_S = REMAIN_MS/1000;
     const REMAIN_P = REMAIN_S*REMAIN_S*DECEL/2;
     displayObj.position.x = (REMAIN_P * START_X + (DELTA_P-REMAIN_P) * END_X ) / DELTA_P;
