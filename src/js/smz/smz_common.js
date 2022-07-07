@@ -56,22 +56,23 @@ SmzCommon.linearMoveToPos = function(param){
   const END_X = x;
   const START_Y = displayObj.position.y;
   const END_Y = y;
-  const PERIOD_MS = endMs-startMs;
+  const DELTA_MS = endMs-startMs;
+  const END_MS = endMs;
   
   const tickFuncAry = [null];
   const tickFunc = (nowMs)=>{
-    const REMAIN_MS = Math.min(Math.max(0,endMs-nowMs),PERIOD_MS);
-    displayObj.position.x = (REMAIN_MS * START_X + (PERIOD_MS-REMAIN_MS) * END_X ) / PERIOD_MS;
-    displayObj.position.y = (REMAIN_MS * START_Y + (PERIOD_MS-REMAIN_MS) * END_Y ) / PERIOD_MS;
-    if(nowMs>=endMs){
+    const REMAIN_MS = Math.min(Math.max(0,END_MS-nowMs),DELTA_MS);
+    displayObj.position.x = (REMAIN_MS * START_X + (DELTA_MS-REMAIN_MS) * END_X ) / DELTA_MS;
+    displayObj.position.y = (REMAIN_MS * START_Y + (DELTA_MS-REMAIN_MS) * END_Y ) / DELTA_MS;
+    if(nowMs>=END_MS){
       if(tickFuncAry[0]){ticker.remove(tickFuncAry[0]);}
-      if(callback){setTimeout(callback,0,{nowMs:nowMs,endMs:endMs});}
+      if(callback){setTimeout(callback,0,{nowMs:nowMs,endMs:END_MS});}
     }
   }
 
   tickFunc(nowMs);
 
-  if(nowMs<endMs){
+  if(nowMs<END_MS){
     tickFuncAry[0] = ()=>{
       const CURRENT_MS=SmzCommon.currentMs(ticker);
       tickFunc(CURRENT_MS);
@@ -97,26 +98,26 @@ SmzCommon.slideInPos = function(param){
   const END_Y = y;
 
   const DELTA_P = Math.pow((START_X-END_X)*(START_X-END_X)+(START_Y-END_Y)*(START_Y-END_Y),0.5);
-  const DELTA_T = (endMs!=null)?(endMs-startMs):(Math.pow(2*DELTA_P/deceleration,0.5)*1000);
-  const END_T   = startMs+DELTA_T;
-  const DECEL   = (deceleration!=null)?(deceleration):(2*DELTA_P*Math.pow(1000/DELTA_T,2));
+  const DELTA_MS = (endMs!=null)?(endMs-startMs):(Math.pow(2*DELTA_P/deceleration,0.5)*1000);
+  const END_MS   = (endMs!=null)?endMs:(startMs+DELTA_MS);
+  const DECEL   = (deceleration!=null)?(deceleration):(2*DELTA_P*Math.pow(1000/DELTA_MS,2));
   
   const tickFuncAry = [null];
   const tickFunc = (nowMs)=>{
-    const REMAIN_MS = Math.min(Math.max(0,END_T-nowMs),DELTA_T);
+    const REMAIN_MS = Math.min(Math.max(0,END_MS-nowMs),DELTA_MS);
     const REMAIN_S = REMAIN_MS/1000;
     const REMAIN_P = REMAIN_S*REMAIN_S*DECEL/2;
     displayObj.position.x = (REMAIN_P * START_X + (DELTA_P-REMAIN_P) * END_X ) / DELTA_P;
     displayObj.position.y = (REMAIN_P * START_Y + (DELTA_P-REMAIN_P) * END_Y ) / DELTA_P;
-    if(nowMs>=END_T){
+    if(nowMs>=END_MS){
       if(tickFuncAry[0]){ticker.remove(tickFuncAry[0]);}
-      if(callback){setTimeout(callback,0,{nowMs:nowMs,endMs:END_T});}
+      if(callback){setTimeout(callback,0,{nowMs:nowMs,endMs:END_MS});}
     }
   }
   
   tickFunc(nowMs);
 
-  if(nowMs<END_T){
+  if(nowMs<END_MS){
     tickFuncAry[0] = ()=>{
       const CURRENT_MS=SmzCommon.currentMs(ticker);
       tickFunc(CURRENT_MS);
