@@ -126,7 +126,7 @@ SmzCommon._animate = function(tickFunc, tData, planEndMs, ticker, callback, prio
   tickFunc(THREAD_MS);
 
   if(THREAD_MS>=planEndMs){
-    if(callback){setTimeout(callback,0,{threadMs:THREAD_MS,planMs:planEndMs});}
+    C._tDataCallback(callback,planEndMs);
   }else{
     const tickFuncAry = [null];
     tickFuncAry[0] = ()=>{
@@ -134,11 +134,22 @@ SmzCommon._animate = function(tickFunc, tData, planEndMs, ticker, callback, prio
       tickFunc(THREAD_MS);
       if(THREAD_MS>=planEndMs){
         ticker.remove(tickFuncAry[0]);
-        if(callback){setTimeout(callback,0,{threadMs:THREAD_MS,planMs:planEndMs});}
+        C._tDataCallback(callback,planEndMs);
       }
     };
     ticker.add(tickFuncAry[0],null,priority);
   }
+};
+
+SmzCommon._tDataCallback = function(callback,planMs){
+  if(!callback)return;
+  setTimeout(
+    ()=>{
+      const THREAD_MS = performance.now();
+      callback({threadMs:THREAD_MS,planMs:planMs});
+    },
+    0
+  );
 };
 
 return SmzCommon;
