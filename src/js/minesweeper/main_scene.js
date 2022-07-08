@@ -27,7 +27,11 @@ class MainScene extends smz_game_object.SmzGameObject {
   tick(){
     const self = this;
     const threadMs = SmzCommon.currentMs(self.runtime.app.ticker);
-    self.cellGameGObj.angle = (threadMs/2/360)%360;
+    self.cellGameGObj.angle = MainScene.msToAngle(threadMs);
+  };
+  
+  static msToAngle(ms){
+    return (ms/2/360)%360;
   };
 
 };
