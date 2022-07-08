@@ -4,6 +4,7 @@ import * as smz_game_object from '/js/smz/smz_game_object.js';
 import * as PIXI from 'pixi.js';
 
 import CellGroupGameObject from './cell_group_gobj.js';
+import SmzCommon from '/js/smz/smz_common.js';
 
 'use strict';
 
@@ -25,8 +26,8 @@ class MainScene extends smz_game_object.SmzGameObject {
 
   tick(){
     const self = this;
-    
-    self.cellGameGObj.angle = (performance.now()/2/360)%360;
+    const threadMs = SmzCommon.currentMs(self.runtime.app.ticker);
+    self.cellGameGObj.angle = (threadMs/2/360)%360;
   };
 
 };
