@@ -2,6 +2,7 @@
 
 import ShiftHState from '/js/minesweeper/shift_h_state.js';
 import ShiftVState from '/js/minesweeper/shift_v_state.js';
+import OpenState from '/js/minesweeper/open_state.js';
 
 'use strict';
 
@@ -21,7 +22,9 @@ class StateMgr {
     var tmp;
     while(true){
       tData = (await ShiftHState.goAsync(self.parentMainScene,tData));
+      tData = (await OpenState.goAsync(self.parentMainScene,tData));
       tData = (await ShiftVState.goAsync(self.parentMainScene,tData));
+      tData = (await OpenState.goAsync(self.parentMainScene,tData));
     }
   };
 

@@ -9,7 +9,7 @@ export const ShiftVState = (function(){
 
 const ShiftVState = {};
 
-ShiftVState.goAsync = async function(parentMainScene, tData){
+ShiftVState.goAsync = async function(cellGroupGameObj, tData){
   // cal move dist
   const moveAry = Array(MwCommon.CELL_ROWCOL_COUNT);
   for(let i=0;i<MwCommon.CELL_ROWCOL_COUNT;++i){
@@ -33,13 +33,13 @@ ShiftVState.goAsync = async function(parentMainScene, tData){
       const newCellCnt = move;
       for(let j=0;j<newCellCnt;++j){
         const jj = 0-move+j;
-        parentMainScene.randomCreateCell(i,jj);
+        cellGroupGameObj.randomCreateCell(i,jj);
       }
     }else{
       const newCellCnt = -move;
       for(let j=0;j<newCellCnt;++j){
         const jj = MwCommon.CELL_ROWCOL_COUNT+j;
-        parentMainScene.randomCreateCell(i,jj);
+        cellGroupGameObj.randomCreateCell(i,jj);
       }
     }
   }
@@ -49,7 +49,7 @@ ShiftVState.goAsync = async function(parentMainScene, tData){
   const promiseAry = [];
   
   // move cell
-  for(const cell of parentMainScene.children){
+  for(const cell of cellGroupGameObj.cellGroup.children){
     const i = cell.gx;
     const j0 = cell.gy;
     const move = moveAry[i];
@@ -58,7 +58,7 @@ ShiftVState.goAsync = async function(parentMainScene, tData){
     const promise = SmzCommon.p(SmzCommon.slideInPos,{
       displayObj:cell,
       ticker:cell.runtime.app.ticker,
-      x:parentMainScene.gToP(i),y:parentMainScene.gToP(j1),
+      x:cellGroupGameObj.gToP(i),y:cellGroupGameObj.gToP(j1),
       tData:tData,deltaMs:1000,
     });
     promiseAry.push(promise);
@@ -69,7 +69,7 @@ ShiftVState.goAsync = async function(parentMainScene, tData){
   
   // remove all out grid cell
   const rmCellList = [];
-  for(const cell of parentMainScene.children){
+  for(const cell of cellGroupGameObj.cellGroup.children){
     var rm=false;
     if(cell.gy<0){rm=true;}
     if(cell.gx<0){rm=true;}

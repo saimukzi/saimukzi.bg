@@ -18,6 +18,9 @@ class CellGroupGameObject extends smz_game_object.SmzGameObject {
     super(runtime);
     const self = this;
     
+    self.cellGroup = new PIXI.Container();
+    self.addChild(self.cellGroup);
+    
     // self.testCellObj = new CellGameObject(self.runtime);
     // self.addChild(self.testCellObj);
     for(let i=0;i<MwCommon.CELL_ROWCOL_COUNT;++i)
@@ -50,7 +53,7 @@ class CellGroupGameObject extends smz_game_object.SmzGameObject {
     testCellObj.position.y = self.gToP(gy);
     testCellObj.gx = gx;
     testCellObj.gy = gy;
-    self.addChild(testCellObj);
+    self.cellGroup.addChild(testCellObj);
   };
   
   gToP(g){
