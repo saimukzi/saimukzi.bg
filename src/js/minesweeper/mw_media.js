@@ -95,12 +95,7 @@ MwMedia.createRoundBoxGraphics = function(color,size){
 
   const ret = new PIXI.Graphics();
   ret.beginFill(color);
-  ret.drawRect((1-SmzCommon.PHI)*size/2,-0.5*size,(SmzCommon.PHI-1)*size,1*size);
-  ret.drawRect(-0.5*size,(1-SmzCommon.PHI)*size/2,1*size,(SmzCommon.PHI-1)*size);
-  ret.drawCircle(-OFFSET*size,-OFFSET*size,RADIUS*size);
-  ret.drawCircle(-OFFSET*size,+OFFSET*size,RADIUS*size);
-  ret.drawCircle(+OFFSET*size,-OFFSET*size,RADIUS*size);
-  ret.drawCircle(+OFFSET*size,+OFFSET*size,RADIUS*size);
+  ret.drawRoundedRect(-0.5*size,-0.5*size,1*size,1*size,RADIUS*size);
   ret.endFill();
   return ret;
 };
