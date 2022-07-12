@@ -7,6 +7,7 @@ import SmzCommon from '/js/smz/smz_common.js';
 import CellGameObject from './cell_gobj.js';
 import StateMgr from '/js/minesweeper/state_mgr.js';
 import MwCommon from '/js/minesweeper/mw_common.js';
+import MwMedia from '/js/minesweeper/mw_media.js';
 
 'use strict';
 
@@ -32,6 +33,8 @@ class CellGroupGameObject extends smz_game_object.SmzGameObject {
     //self.state.start();
     self.stateMgr = new StateMgr(self);
     self.stateMgr.goAsync();
+    
+    self.createDebugObj();
   };
   
   tick(){
@@ -58,6 +61,12 @@ class CellGroupGameObject extends smz_game_object.SmzGameObject {
   
   gToP(g){
     return (g-MwCommon.CELL_ROWCOL_COUNT/2)*MwCommon.CELL_SIZE;
+  };
+
+  createDebugObj(){
+    const self = this;
+    self.debugObj = MwMedia.createRoundBoxGraphics(0xff0000,100);
+    self.addChild(self.debugObj);
   };
 
 };
