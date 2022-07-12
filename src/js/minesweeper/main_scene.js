@@ -10,6 +10,10 @@ import SmzCommon from '/js/smz/smz_common.js';
 
 export const MainScene = (function(){
 
+const POS_CENTER_X = 960;
+const POS_CENTER_Y = 540;
+const POS_RADIUS = Math.sqrt(960*960+540*540)/SmzCommon.PHI;
+
 class MainScene extends smz_game_object.SmzGameObject {
 
   constructor(runtime){
@@ -28,10 +32,23 @@ class MainScene extends smz_game_object.SmzGameObject {
     const self = this;
     const threadMs = SmzCommon.currentMs(self.runtime.app.ticker);
     self.cellGameGObj.angle = MainScene.msToAngle(threadMs);
+    const {x,y} = MainScene.msToPos(threadMs);
+    console.log(x);
+    self.cellGameGObj.position.x = x;
+    self.cellGameGObj.position.y = y;
   };
   
   static msToAngle(ms){
     return (ms/2/360)%360;
+  };
+  
+  static msToPos(ms){
+    const rad = ((ms/1000/2/32/SmzCommon.PHI)%1)*2*Math.PI;
+    console.log(rad);
+    return {
+      x:POS_CENTER_X+POS_RADIUS*Math.cos(rad),
+      y:POS_CENTER_Y+POS_RADIUS*Math.sin(rad)
+    };
   };
 
 };
