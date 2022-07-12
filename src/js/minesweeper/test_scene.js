@@ -39,6 +39,8 @@ class TestScene extends smz_game_object.SmzGameObject {
     
     //self.tmp = new PIXI.Sprite(self.runtime.nRoundBoxTextureList[9]);
     //self.addChild(self.tmp);
+    
+    self.mainScene.cellGameGObj.createDebugObj();
   };
 
   async onTestBtnClick(){
