@@ -33,8 +33,6 @@ class CellGroupGameObject extends smz_game_object.SmzGameObject {
     //self.state.start();
     self.stateMgr = new StateMgr(self);
     self.stateMgr.goAsync();
-    
-    self.createDebugObj();
   };
   
   tick(){
