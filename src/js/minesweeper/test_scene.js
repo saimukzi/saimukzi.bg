@@ -17,11 +17,26 @@ class TestScene extends smz_game_object.SmzGameObject {
   constructor(runtime){
     super(runtime);
     const self = this;
+
+    self.mainSceneTransform = new PIXI.Container();
+    self.mainSceneTransform.scale.x = 0.25;
+    self.mainSceneTransform.scale.y = 0.25;
+    self.mainSceneTransform.position.x = 100;
+    self.mainSceneTransform.position.y = 100;
+    self.addChild(self.mainSceneTransform);
     
     self.mainScene = new MainScene(self.runtime);
-    self.mainScene.scale.x = 0.25;
-    self.mainScene.scale.y = 0.25;
-    self.addChild(self.mainScene);
+    self.mainSceneTransform.addChild(self.mainScene);
+    
+    const BORDER_SIZE = 8;
+    self.mainSceneBorder = new PIXI.Graphics();
+    self.mainSceneBorder.beginFill(0xffff7f);
+    self.mainSceneBorder.drawRect(-BORDER_SIZE,-BORDER_SIZE,1920+BORDER_SIZE*2,1080+BORDER_SIZE*2);
+    self.mainSceneBorder.endFill();
+    self.mainSceneBorder.beginHole();
+    self.mainSceneBorder.drawRect(0,0,1920,1080);
+    self.mainSceneBorder.endFill();
+    self.mainSceneTransform.addChild(self.mainSceneBorder);
     
     self.testCellGObj = new CellGameObject(self.runtime);
     self.addChild(self.testCellGObj);
