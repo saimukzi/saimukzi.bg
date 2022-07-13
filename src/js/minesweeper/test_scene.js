@@ -4,6 +4,7 @@ import * as smz_game_object from '/js/smz/smz_game_object.js';
 import * as PIXI from 'pixi.js';
 import MainScene from '/js/minesweeper/main_scene.js';
 import SmzCommon from '/js/smz/smz_common.js';
+import MwMedia from '/js/minesweeper/mw_media.js';
 
 import CellGroupGameObject from './cell_group_gobj.js';
 import CellGameObject from './cell_gobj.js';
@@ -37,6 +38,11 @@ class TestScene extends smz_game_object.SmzGameObject {
     self.mainSceneBorder.drawRect(0,0,1920,1080);
     self.mainSceneBorder.endFill();
     self.mainSceneTransform.addChild(self.mainSceneBorder);
+
+    self.mainSceneCenter = MwMedia.createRoundBoxGraphics(0xffff7f,8);
+    self.mainSceneCenter.position.x = 960;
+    self.mainSceneCenter.position.y = 540;
+    self.mainSceneTransform.addChild(self.mainSceneCenter);
     
     self.testCellGObj = new CellGameObject(self.runtime);
     self.addChild(self.testCellGObj);
