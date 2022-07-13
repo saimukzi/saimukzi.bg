@@ -39,11 +39,11 @@ class MainScene extends smz_game_object.SmzGameObject {
   };
   
   static msToAngle(ms){
-    return (ms/2/360)%360;
+    return (ms*360/1000/60/3)%360;
   };
   
   static msToPos(ms){
-    const rad = ((ms/1000/2/32/SmzCommon.PHI)%1)*2*Math.PI;
+    const rad = (ms*2*Math.PI*(-1) /1000/60/3/SmzCommon.PHI)%(2*Math.PI);
     console.log(rad);
     return {
       x:POS_CENTER_X+POS_RADIUS*Math.cos(rad),
