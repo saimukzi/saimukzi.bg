@@ -63,8 +63,8 @@ class CellGroupGameObject extends smz_game_object.SmzGameObject {
 
   createDebugObj(){
     const self = this;
-    self.debugObj = MwMedia.createRoundBoxGraphics(0xff0000,30);
-    self.addChild(self.debugObj);
+    self.centerDebugObj = MwMedia.createRoundBoxGraphics(0xff0000,30);
+    self.addChild(self.centerDebugObj);
   };
 
 };
