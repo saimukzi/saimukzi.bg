@@ -24,22 +24,9 @@ class StateMgr {
     var tmp;
     while(true){
       tData = (await ShiftHState.goAsync(self.parentMainScene.cellGameGObj,tData));
-
-      self.parentMainScene.dummyContainerTransform(tData.planMs);
-      tmp = new PIXI.Point(960,540);
-      self.parentMainScene.dummyContainer.toLocal(tmp,self.parentMainScene,tmp);
-      self.parentMainScene.cellGameGObj.debugStartObj.position.copyFrom(tmp);
-
-      self.parentMainScene.dummyContainerTransform(tData.planMs+2000);
-      tmp = new PIXI.Point(960,540);
-      self.parentMainScene.dummyContainer.toLocal(tmp,self.parentMainScene,tmp);
-      self.parentMainScene.cellGameGObj.debugEndObj.position.copyFrom(tmp);
-
-      tData = await SmzCommon.waitPromise(tData,2000);
-
-      // tData = (await OpenState.goAsync(self.parentMainScene,tData));
+      tData = (await OpenState.goAsync(self.parentMainScene,tData));
       tData = (await ShiftVState.goAsync(self.parentMainScene.cellGameGObj,tData));
-      // tData = (await OpenState.goAsync(self.parentMainScene,tData));
+      tData = (await OpenState.goAsync(self.parentMainScene,tData));
     }
   };
 
