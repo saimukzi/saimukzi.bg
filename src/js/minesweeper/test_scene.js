@@ -61,6 +61,13 @@ class TestScene extends smz_game_object.SmzGameObject {
     //self.tmp = new PIXI.Sprite(self.runtime.nRoundBoxTextureList[9]);
     //self.addChild(self.tmp);
     
+    self.testLogo = PIXI.Sprite.from(runtime.logoTexture);
+    self.testLogo.position.x = 0;
+    self.testLogo.position.y = 200;
+    self.testLogo.width = 100;
+    self.testLogo.height = 100;
+    self.addChild(self.testLogo);
+    
     self.mainScene.cellGameGObj.createDebugObj();
   };
 

@@ -10,12 +10,16 @@ export const MwMedia = (function(){
 
 const MwMedia = {};
 
+const PHI2 = Math.pow((SmzCommon.PHI-1), 0.5);
+
 MwMedia.initMediaAsync = async function(runtime){
   const renderer = runtime.app.renderer;
   //const renderer = runtime.renderer;
   console.log(renderer);
   
   runtime.pRoundBoxTexture = MwMedia.createRoundBoxTexture(renderer, MwCommon.COLOR_00, MwCommon.COLOR_P1, 128);
+
+  runtime.logoTexture = MwMedia.createLogoTexture(renderer, MwCommon.COLOR_00, MwCommon.COLOR_N1, 128);
 
   await new Promise((res,rej)=>{
     runtime.digitBaseTexture = PIXI.BaseTexture.from('assets/digit.png');
@@ -34,7 +38,6 @@ MwMedia.initMediaAsync = async function(runtime){
 MwMedia.createRoundBoxDigitTexture = function(renderer, bgColor, fgColor, baseTexture, textureUvRect, size){
   const ret = PIXI.RenderTexture.create({width:size,height:size});
   
-  const PHI2 = Math.pow((SmzCommon.PHI-1), 0.5);
 
   var tmpDo;
   var tmpTx;
@@ -97,6 +100,49 @@ MwMedia.createRoundBoxGraphics = function(color,size){
   ret.beginFill(color);
   ret.drawRoundedRect(-0.5*size,-0.5*size,1*size,1*size,RADIUS*size);
   ret.endFill();
+  return ret;
+};
+
+MwMedia.createLogoTexture = function(renderer, bgColor, fgColor, size){
+  const ret = PIXI.RenderTexture.create({width:size,height:size});
+  var tmpGraphics;
+  
+  tmpGraphics = new PIXI.Graphics();
+  tmpGraphics.clear();
+  tmpGraphics.beginFill(bgColor);
+  tmpGraphics.drawRect(0,0,size,size);
+  tmpGraphics.endFill();
+  renderer.render(tmpGraphics, {renderTexture:ret} );
+  tmpGraphics.destroy();
+
+  tmpGraphics = MwMedia.createRoundBoxGraphics(fgColor,size);
+  tmpGraphics.position.x = size/2;
+  tmpGraphics.position.y = size/2;
+  renderer.render(tmpGraphics, {renderTexture:ret, clear:false} );
+  tmpGraphics.destroy();
+
+  tmpGraphics = new PIXI.Graphics();
+
+  tmpGraphics.clear();
+  tmpGraphics.beginFill(bgColor);
+  tmpGraphics.drawCircle(size/2,size/2,size*PHI2/2);
+  tmpGraphics.endFill();
+  renderer.render(tmpGraphics, {renderTexture:ret, clear:false} );
+
+  // tmpGraphics.clear();
+  // tmpGraphics.beginFill(fgColor);
+  // tmpGraphics.drawCircle(size*(1/2+PHI2/4),size/2,size*PHI2/4);
+  // tmpGraphics.endFill();
+  // renderer.render(tmpGraphics, {renderTexture:ret, clear:false} );
+  // 
+  // tmpGraphics.clear();
+  // tmpGraphics.beginFill(fgColor);
+  // tmpGraphics.arc(size*(1/2-PHI2/4),size/2-size*PHI2*PHI2/3/Math.PI,size*PHI2*PHI2/4,0,Math.PI);
+  // tmpGraphics.endFill();
+  // renderer.render(tmpGraphics, {renderTexture:ret, clear:false} );
+
+  tmpGraphics.destroy();
+
   return ret;
 };
 
