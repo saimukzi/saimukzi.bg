@@ -59,7 +59,7 @@ OpenState.goAsync = async function(mainScene, tData){
       var t=t0;
       const ms = pos*BIG_FLIP_MS;
       t=await SmzCommon.waitPromise(t,ms);
-      console.log(pos);
+      //console.log(pos);
       t=await cell.showNBlockAsync(rad,t);
       return t;
     };
@@ -97,7 +97,7 @@ OpenState.goAsync = async function(mainScene, tData){
       var t=t1;
       const ms = pos*BIG_FLIP_MS;
       t=await SmzCommon.waitPromise(t,ms);
-      console.log(pos);
+      // console.log(pos);
       t=await cell.hideNBlockAsync(rad+Math.PI,t);
       return t;
     };
