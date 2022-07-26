@@ -1,21 +1,22 @@
 // import MineSweeper from '/js/minesweeper/minesweeper.js';
 
+import SmzCommon from '/js/smz/smz_common.js';
+
 'use strict';
 
 export const MineSweeper = (function(){
-
-import SmzCommon from '/js/smz/smz_common.js';
 
 const MineSweeper = {};
 
 // empty = ' '
 // mine =  '*'
 // input can be row str list
-MineSweeper.calc = func(cellListList) {
+MineSweeper.calc = function(cellListList) {
   const EMPTY = ' ';
   const MINE  = 'X';
   const S0 = cellListList.length;
   const S1 = cellListList[0].length;
+  console.log(S0,S1);
   const retCellListList = SmzCommon.createArray(S0, S1);
   for(let i0=0;i0<S0;++i0)
   for(let i1=0;i1<S1;++i1){

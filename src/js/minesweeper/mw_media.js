@@ -3,6 +3,7 @@
 import * as PIXI from 'pixi.js';
 import MwCommon from '/js/minesweeper/mw_common.js';
 import SmzCommon from '/js/smz/smz_common.js';
+import MineSweeper from '/js/minesweeper/minesweeper.js';
 
 'use strict';
 
@@ -25,6 +26,16 @@ MwMedia.initMediaAsync = async function(runtime){
     runtime.digitBaseTexture = PIXI.BaseTexture.from('assets/digit.png');
     runtime.digitBaseTexture.on('loaded',res);
   });
+
+  var map_txt = await fetch('/assets/map.txt');
+  map_txt = await map_txt.text();
+  console.log(map_txt);
+  map_txt = map_txt.replaceAll("\r\n","\n");
+  map_txt = map_txt.split("\n");
+  map_txt = map_txt.filter((r)=>{return r.length>0;});
+  console.log(map_txt);
+  map_txt = MineSweeper.calc(map_txt);
+  console.log(map_txt);
 
   //runtime.nRoundBoxTexture = MwMedia.createRoundBoxDigitTexture(renderer, MwCommon.COLOR_00, MwCommon.COLOR_N1, runtime.digitBaseTexture, new PIXI.Rectangle(0,0,256,256), 128);
   runtime.nRoundBoxTextureList = [];
