@@ -13,7 +13,7 @@ const MineSweeper = {};
 // input can be row str list
 MineSweeper.calc = func(cellListList) {
   const EMPTY = ' ';
-  const MINE  = '*';
+  const MINE  = 'X';
   const S0 = cellListList.length;
   const S1 = cellListList[0].length;
   const retCellListList = SmzCommon.createArray(S0, S1);
