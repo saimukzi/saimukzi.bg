@@ -24,9 +24,10 @@ const GAME_MAIN = {
     // runtime
     self.runtime = new smz_runtime.SmzRuntime(self.app, self.FPS);
 
-    MwMedia.initMediaAsync(self.runtime).then(()=>{
+    (async function(){
+      await MwMedia.initMediaAsync(self.runtime);
       self.runtime.setScene(new MainScene(self.runtime));
-    });
+    })();
   },
 };
 
