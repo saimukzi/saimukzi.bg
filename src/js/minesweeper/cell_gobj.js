@@ -58,7 +58,8 @@ class CellGameObject extends smz_game_object.SmzGameObject {
   setNBlockTexture(tId, dir){
     const self=this;
     self.nBlock.angle = dir*90;
-    self.nBlock.texture = this.runtime.nRoundBoxTextureList[tId];
+    self.nBlock.texture = (tId=='X') ? this.runtime.logoTexture :
+                                       this.runtime.nRoundBoxTextureList[tId];
   };
 
   async showNBlockAsync(rad,tData){

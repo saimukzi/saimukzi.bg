@@ -38,11 +38,11 @@ MwMedia.initMediaAsync = async function(runtime){
     console.log(map_txt);
     map_txt = MineSweeper.calc(map_txt);
     console.log(map_txt);
-    runtime.map_txt = map_txt;
+    runtime.mapCellListList = map_txt;
   }else{
     console.log("Load map failed");
     map_txt = null;
-    runtime.map_txt = null;
+    runtime.mapCellListList = null;
   }
 
   //runtime.nRoundBoxTexture = MwMedia.createRoundBoxDigitTexture(renderer, MwCommon.COLOR_00, MwCommon.COLOR_N1, runtime.digitBaseTexture, new PIXI.Rectangle(0,0,256,256), 128);

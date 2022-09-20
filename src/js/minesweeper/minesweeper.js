@@ -27,11 +27,9 @@ MineSweeper.calc = function(cellListList) {
     var v = 0;
     for(let ii0=i0-1;ii0<=i0+1;++ii0)
     for(let ii1=i1-1;ii1<=i1+1;++ii1){
-      if(ii0<0)continue;
-      if(ii0>=S0)continue;
-      if(ii1<0)continue;
-      if(ii1>=S1)continue;
-      if(cellListList[ii0][ii1]==MINE){++v;}
+      const ii0x = (ii0+S0)%S0;
+      const ii1x = (ii1+S1)%S1;
+      if(cellListList[ii0x][ii1x]==MINE){++v;}
     }
     retCellListList[i0][i1] = v;
   }
