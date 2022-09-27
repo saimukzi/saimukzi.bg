@@ -22,6 +22,7 @@ const OpenState = {};
 
 OpenState.goAsync = async function(mainScene, tData){
   const cellGroupGameObj = mainScene.cellGameGObj;
+  const mapCellListList = mainScene.runtime.mapCellListList;
   var myTData = tData;
   var flipCenter;
   var rad;
@@ -40,8 +41,28 @@ OpenState.goAsync = async function(mainScene, tData){
   //var tmpPtr = tmpMat.applyInverse(flipCenter);
   //console.log(tmpPtr);
 
-  for(const cell of cellGroupGameObj.cellGroup.children){
-    cell.setNBlockTexture(SmzCommon.randInt(10),SmzCommon.randInt(4));
+  if(mapCellListList!=null){
+    const LEN0 = mapCellListList.length;
+    const LEN1 = mapCellListList[0].length;
+    const ROT = SmzCommon.randInt(4);
+    var xx=0;var xy=0;var yx=0;var yy=0;
+    if(ROT==0)     {xx=1; xy=0; yx=0; yy=1; }
+    else if(ROT==1){xx=0; xy=1; yx=-1;yy=0; }
+    else if(ROT==1){xx=0; xy=-1;yx=1; yy=0; }
+    else           {xx=-1;xy=0; yx=0; yy=-1;}
+    const SHIFT0 = SmzCommon.randInt(LEN0);
+    const SHIFT1 = SmzCommon.randInt(LEN1);
+    for(const cell of cellGroupGameObj.cellGroup.children){
+      const MX = (cell.gx*xx+cell.gy*yx+SHIFT1+LEN1*3)%LEN1;
+      const MY = (cell.gx*xy+cell.gy*yy+SHIFT0+LEN0*3)%LEN0;
+      var mapCell = mapCellListList[MY][MX];
+      //if(mapCell=='X'){mapCell=9;}
+      cell.setNBlockTexture(mapCell,SmzCommon.randInt(4));
+    }
+  }else{
+    for(const cell of cellGroupGameObj.cellGroup.children){
+      cell.setNBlockTexture(SmzCommon.randInt(10),SmzCommon.randInt(4));
+    }
   }
 
   const t0 = myTData;
